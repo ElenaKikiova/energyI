@@ -119,6 +119,7 @@
                 *ngFor="let product of addedProducts[macronutrient.Letter]"
                 [name]="product.info.Name"
                 [weight]="product.weight"
+                [blocks]="product.blocks"
                 [imageName]="product.info.ImageName">
 
               </product>

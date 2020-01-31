@@ -1,0 +1,25 @@
+ion-card{
+    max-width: 130px;
+}
+
+ion-img{
+    max-width: 100px;
+    margin: auto;
+    margin-top: 5px;
+}
+
+ion-card, ion-card-content{
+    padding: 0px !important;
+}
+
+ion-item{
+    line-height: 2rem !important;
+    border-bottom: 1px solid grey;
+    margin-bottom: 0.5rem;
+}
+
+.info-label{
+    line-height: 2rem !important;
+    font-size: 1rem !important;
+    display: block !important;
+}

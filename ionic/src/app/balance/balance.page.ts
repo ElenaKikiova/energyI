@@ -144,7 +144,8 @@ export class BalancePage implements OnInit {
 
     this.addedProducts[productObj.Type].push({
       "info": productObj,
-      "weight": this.current.weight
+      "weight": this.current.weight,
+      "blocks": this.current.blocks
     });
 
     this.addedProductsIndexes[productObj.Type].push(this.current.chosenProduct.id);

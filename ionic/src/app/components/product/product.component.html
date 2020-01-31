@@ -1,13 +1,22 @@
-<ion-card>
+<ion-card (click)="showProductOptions()">
 
   <ion-img [src]="imagePath"></ion-img>
 
   <ion-card-content>
+    
+    <ion-item class="ion-text-center" lines="none">
+      <ion-label>{{ name }}</ion-label>
+    </ion-item>
 
-    <ion-label>
-      {{name }}
-      {{ weight}}
+    <ion-label class="info-label">
+      <ion-icon src="../assets/images/products/weight.svg" style="margin-right: 5px"></ion-icon>
+      <ion-label>{{ weight }} {{ lang.gramsAbbr }}</ion-label>
     </ion-label>
+
+    <ion-label class="info-label">
+      <ion-icon name="cube" style="margin-right: 5px"></ion-icon>
+      <ion-label>{{ blocks }} {{ lang.blocksAbbr }}</ion-label>
+    </ion-label >
 
   </ion-card-content>
 
