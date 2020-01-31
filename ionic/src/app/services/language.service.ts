@@ -9,6 +9,9 @@ export class LanguageService {
   public current = {};
 
   public BG = {
+    "isBalanced": "Балансирано!",
+    "add": "Добавете",
+    "reduceWith": "Намалете с ",
     "productAlreadyAddedError": "Този продукт вече е добавен",
     "productAlreadyAddedErrorMessage": "Може да редактирате количеството му",
     "mealFor": "Ястие за",

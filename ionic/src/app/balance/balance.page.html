@@ -31,7 +31,28 @@
 
             <ion-card-header> 
               <ion-item>{{ macronutrient.Name }} </ion-item>
-              <ion-item>{{ lang.balancedPlural }}: {{ blocks[macronutrient.Letter] }} {{lang.blocks}} </ion-item>
+              <ion-item>
+                {{ lang.balancedPlural }}: {{ blocks[macronutrient.Letter] }} {{ lang.blocks }} 
+              </ion-item>
+
+              <ion-input 
+                hidden
+                [value]="blocks.target - blocks[macronutrient.Letter]"
+                [(ngModel)]="blocksLeft[macronutrient.Letter]"
+              ></ion-input>
+
+              <ion-item color="warning" *ngIf="blocksLeft[macronutrient.Letter] > 0">
+                {{ lang.add }} {{ blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
+              </ion-item>
+
+              <ion-item color="warning" *ngIf="blocksLeft[macronutrient.Letter] < 0">
+                {{ lang.reduceWith }} {{ -blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
+              </ion-item>
+
+              <ion-item color="success" *ngIf="blocksLeft[macronutrient.Letter] == 0">
+                {{ lang.isBalanced }}
+              </ion-item>
+
             </ion-card-header>
 
             <ion-card-content>

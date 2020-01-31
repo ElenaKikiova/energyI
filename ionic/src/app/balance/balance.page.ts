@@ -31,6 +31,7 @@ export class BalancePage implements OnInit {
   public blocks = {
     target: 3
   }
+  public blocksLeft = {}
 
   constructor(
     private alertController: AlertController,
@@ -51,6 +52,7 @@ export class BalancePage implements OnInit {
       this.addedProducts[macronutrientLetter] = [];
       this.addedProductsIndexes[macronutrientLetter] = [];
       this.blocks[macronutrientLetter] = 0;
+      this.blocksLeft[macronutrientLetter] = this.blocks.target;
     }
   }
 
@@ -109,9 +111,6 @@ export class BalancePage implements OnInit {
 
       this.current.blocks = 1;
       this.calculateWeight();
-      // this.current.weight = this.current.productFor1Block;
-
-      console.log(this.current)
 
     }
     else{
@@ -152,11 +151,13 @@ export class BalancePage implements OnInit {
       "info": productObj,
       "weight": this.current.weight
     });
+
     this.addedProductsIndexes[productObj.Type].push(this.current.chosenProduct.id);
+
+    this.blocks[productObj.Type] += this.current.blocks;
 
     this.setUpCalculator(null);
 
-    console.log(this.addedProducts)
   }
 
 }
