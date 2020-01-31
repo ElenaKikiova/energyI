@@ -20,7 +20,7 @@ export class BalancePage implements OnInit {
     productIndex: null,
     productFor1Block: null,
     weight: 0,
-    blocks: 0
+    blocks: 1
   }
 
   public blocks = {
@@ -84,13 +84,21 @@ export class BalancePage implements OnInit {
     console.log(currentProduct)
 
     if(this.addedProductsIndexes[currentProduct.Type].indexOf(productToAddIndex) < 0){
+
       this.current.productIndex = $event.target.value;
       this.current.productFor1Block = 
         this.macronutrientsService.For1Block[this.current.productType] / 
         currentProduct.Value * 100;
+
+      this.current.blocks = 1;
+      this.calculateWeight();
+      // this.current.weight = this.current.productFor1Block;
+
       console.log(this.current)
+
     }
     else{
+
       this.current.productIndex = null;
 
       const alert = await this.alertController.create({
@@ -107,14 +115,15 @@ export class BalancePage implements OnInit {
   calculateWeight(){
     console.log("calcW")
     if(this.current.productIndex != null){
-      this.current.weight = this.current.blocks * this.current.productFor1Block * 10;
+      this.current.weight = Math.round(this.current.blocks * this.current.productFor1Block * 10) / 10;
     }
   }
 
   calculateBlocks(){
     console.log("calcB")
     if(this.current.productIndex != null){
-      this.current.blocks  = this.current.weight / this.current.productFor1Block * 10;
+      this.current.blocks  = Math.round(this.current.weight / this.current.productFor1Block * 10) / 10;
+      console.log(this.current.weight / this.current.productFor1Block)
     }
   }
 

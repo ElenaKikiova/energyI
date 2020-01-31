@@ -35,6 +35,7 @@
             <ion-card-content>
 
               <ion-button
+                *ngIf="current.productType != macronutrient.Letter"
                 (click)="setUpCalculator(macronutrient.Letter)">+</ion-button>
 
               <div *ngIf="current.productType == macronutrient.Letter">
@@ -51,19 +52,23 @@
 
                 <div *ngIf="current.productIndex != null">
 
-                  <ion-input 
-                    type="number" 
-                    step="0.1"
-                    (ionInput)="calculateBlocks()"
-                    [(ngModel)]="current.weight" 
-                    ></ion-input> гр. =
+                  <ion-item>
+                    <ion-input 
+                      type="number" 
+                      step="0.1"
+                      (keyup)="calculateBlocks()"
+                      [(ngModel)]="current.weight" 
+                    ></ion-input> гр. 
+                  </ion-item>
 
-                  <ion-input 
-                    type="number" 
-                    step="0.1"
-                    (ionInput)="calculateWeight()"
-                    [(ngModel)]="current.blocks" 
-                    ></ion-input> блока
+                  <ion-item>
+                    <ion-input 
+                      type="number" 
+                      step="0.1"
+                      (keyup)="calculateWeight()"
+                      [(ngModel)]="current.blocks" 
+                    ></ion-input> бл.
+                  </ion-item>
 
                   <ion-button 
                     [disabled]="current.productIndex == null || current.weight < 1"
