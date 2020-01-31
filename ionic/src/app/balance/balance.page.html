@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Балансатор</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <ion-toolbar>
+          <ion-label> Балансирай </ion-label>
+          <ion-input type="number" [(ngModel)]="blocks.target"></ion-input>
+          <ion-label> блока</ion-label>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+
+        <ion-col 
+          sizeLg="4" sizeMd="4" sizeSm="12" 
+          *ngFor="let macronutrient of macronutrientsService.Types"
+          class="ion-text-center">
+
+          <ion-card>
+
+            <ion-card-header> 
+              <ion-item>{{ macronutrient.Name }} </ion-item>
+              <ion-item>Уравновесени: {{ blocks[macronutrient.Letter] }} блока</ion-item>
+            </ion-card-header>
+
+            <ion-card-content>
+
+              <ion-button
+                (click)="setUpCalculator(macronutrient.Letter)">+</ion-button>
+
+              <div *ngIf="current.productType == macronutrient.Letter">
+
+                <ion-select 
+                  placeholder="Избери продукт"
+                  (ionChange)="setCurrentProduct($event)">
+                  <ion-select-option 
+                    *ngFor="let product of products[macronutrient.Letter]; let i = index"
+                    [value]="i">
+                    {{ product.Name }}
+                  </ion-select-option>
+                </ion-select>
+
+                <div *ngIf="current.productIndex != null">
+
+                  <ion-input 
+                    type="number" 
+                    step="0.1"
+                    (ionInput)="calculateBlocks()"
+                    [(ngModel)]="current.weight" 
+                    ></ion-input> гр. =
+
+                  <ion-input 
+                    type="number" 
+                    step="0.1"
+                    (ionInput)="calculateWeight()"
+                    [(ngModel)]="current.blocks" 
+                    ></ion-input> блока
+
+                  <ion-button 
+                    [disabled]="current.productIndex == null || current.weight < 1"
+                    (click)="addProduct()">
+                    +
+                  </ion-button>
+                  
+                </div>
+              </div>
+
+              <product
+                *ngFor="let product of addedProducts[macronutrient.Letter]"
+                [name]="product.info.Name"
+                [weight]="product.weight"
+                [imageName]="product.info.ImageName">
+
+              </product>
+
+            </ion-card-content>
+
+          </ion-card>
+        </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

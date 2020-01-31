@@ -1,0 +1,29 @@
+{
+  "name": "energy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElenaKikiova/energyI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElenaKikiova/energyI/issues"
+  },
+  "homepage": "https://github.com/ElenaKikiova/energyI#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie": "^0.4.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "ionic": "^5.4.15",
+    "mongoose": "^5.8.10",
+    "nodemailer": "^6.4.2",
+    "parser": "^0.1.4"
+  }
+}
