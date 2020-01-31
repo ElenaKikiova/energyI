@@ -24,6 +24,7 @@
     "ionic": "^5.4.15",
     "mongoose": "^5.8.10",
     "nodemailer": "^6.4.2",
-    "parser": "^0.1.4"
+    "parser": "^0.1.4",
+    "serialize-javascript": "^2.1.2"
   }
 }
