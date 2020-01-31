@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
+import { LanguageService } from '../services/language.service';
 import { MacronutrientsService } from '../services/macronutrients.service';
 import { ProductsService } from '../services/products.service';
 
@@ -11,6 +12,8 @@ import { ProductsService } from '../services/products.service';
 })
 export class BalancePage implements OnInit {
 
+  public lang = this.languageService.current;
+
   public products = {};
   public addedProducts = {};
   public addedProductsIndexes = {};
@@ -19,7 +22,7 @@ export class BalancePage implements OnInit {
 
   public current = {
     productType: "",
-    productIndex: null,
+    chosenProduct: null,
     productFor1Block: null,
     weight: 0,
     blocks: 1
@@ -32,7 +35,8 @@ export class BalancePage implements OnInit {
   constructor(
     private alertController: AlertController,
     private macronutrientsService: MacronutrientsService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private languageService: LanguageService
   ) { }
 
   ngOnInit() {
@@ -86,20 +90,19 @@ export class BalancePage implements OnInit {
 
   async setUpCalculator(macronutrient){
     this.current.productType = macronutrient;
-    this.current.productIndex = null;
+    this.current.chosenProduct = null;
     this.current.productFor1Block = 0;
     this.current.blocks = 0;
     this.current.weight = 0;
   }
 
   async setCurrentProduct($event){
-    let productToAddIndex = this.current.productIndex.id;
+    let productToAddIndex = this.current.chosenProduct.id;
     let currentProduct = this.getProductByIndex(this.current.productType, productToAddIndex);
     console.log(currentProduct)
 
     if(this.addedProductsIndexes[currentProduct.Type].indexOf(productToAddIndex) < 0){
 
-      // this.current.productIndex = $event.target.value;
       this.current.productFor1Block = 
         this.macronutrientsService.For1Block[this.current.productType] / 
         currentProduct.Value * 100;
@@ -113,11 +116,11 @@ export class BalancePage implements OnInit {
     }
     else{
 
-      this.current.productIndex = null;
+      this.current.chosenProduct = null;
 
       const alert = await this.alertController.create({
-        header: 'Този продукт вече е добавен',
-        subHeader: 'Може да редактирате количеството му',
+        header: this.lang.productAlreadyAddedError,
+        subHeader: this.lang.productAlreadyAddedErrorMessage,
         buttons: ['OK']
       });
   
@@ -128,14 +131,14 @@ export class BalancePage implements OnInit {
 
   calculateWeight(){
     console.log("calcW")
-    if(this.current.productIndex != null){
+    if(this.current.chosenProduct != null){
       this.current.weight = Math.round(this.current.blocks * this.current.productFor1Block * 10) / 10;
     }
   }
 
   calculateBlocks(){
     console.log("calcB")
-    if(this.current.productIndex != null){
+    if(this.current.chosenProduct != null){
       this.current.blocks  = Math.round(this.current.weight / this.current.productFor1Block * 10) / 10;
       console.log(this.current.weight / this.current.productFor1Block)
     }
@@ -143,13 +146,13 @@ export class BalancePage implements OnInit {
 
   async addProduct(){
 
-    let productObj = this.getProductByIndex(this.current.productType, this.current.productIndex);
+    let productObj = this.getProductByIndex(this.current.productType, this.current.chosenProduct.id);
 
     this.addedProducts[productObj.Type].push({
       "info": productObj,
       "weight": this.current.weight
     });
-    this.addedProductsIndexes[productObj.Type].push(this.current.productIndex);
+    this.addedProductsIndexes[productObj.Type].push(this.current.chosenProduct.id);
 
     this.setUpCalculator(null);
 

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Балансатор</ion-title>
+    <ion-title>{{lang.balancePage}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,9 +11,11 @@
     <ion-row>
       <ion-col>
         <ion-toolbar>
-          <ion-label> Балансирай </ion-label>
-          <ion-input type="number" [(ngModel)]="blocks.target"></ion-input>
-          <ion-label> блока</ion-label>
+          <ion-item>
+            <ion-label> {{lang.mealFor}} </ion-label>
+            <ion-input type="number" [(ngModel)]="blocks.target"></ion-input>
+            <ion-label> {{lang.blocks}} </ion-label>
+          </ion-item>
         </ion-toolbar>
       </ion-col>
     </ion-row>
@@ -29,7 +31,7 @@
 
             <ion-card-header> 
               <ion-item>{{ macronutrient.Name }} </ion-item>
-              <ion-item>Уравновесени: {{ blocks[macronutrient.Letter] }} блока</ion-item>
+              <ion-item>{{ lang.balancedPlural }}: {{ blocks[macronutrient.Letter] }} {{lang.blocks}} </ion-item>
             </ion-card-header>
 
             <ion-card-content>
@@ -40,18 +42,9 @@
 
               <div *ngIf="current.productType == macronutrient.Letter">
 
-                <!-- <ion-select 
-                  placeholder="Избери продукт"
-                  (ionChange)="setCurrentProduct($event)">
-                  <ion-select-option 
-                    *ngFor="let product of products[macronutrient.Letter]; let i = index"
-                    [value]="i">
-                    {{ product.Name }}
-                  </ion-select-option>
-                </ion-select> -->
-
                 <ionic-selectable
-                  [(ngModel)]="current.productIndex"
+                  [placeholder]="this.lang.chooseProduct"
+                  [(ngModel)]="current.chosenProduct"
                   [items]="selectProducts[macronutrient.Letter]"
                   itemValueField="id"
                   itemTextField="name"
@@ -59,7 +52,7 @@
                   (onChange)="setCurrentProduct($event)">
                 </ionic-selectable>
 
-                <div *ngIf="current.productIndex != null">
+                <div *ngIf="current.chosenProduct != null">
 
                   <ion-item>
                     <ion-input 
@@ -67,7 +60,7 @@
                       step="0.1"
                       (keyup)="calculateBlocks()"
                       [(ngModel)]="current.weight" 
-                    ></ion-input> гр. 
+                    ></ion-input> {{ lang.gramsAbbr }}
                   </ion-item>
 
                   <ion-item>
@@ -76,11 +69,11 @@
                       step="0.1"
                       (keyup)="calculateWeight()"
                       [(ngModel)]="current.blocks" 
-                    ></ion-input> бл.
+                    ></ion-input> {{ lang.blocksAbbr }}
                   </ion-item>
 
                   <ion-button 
-                    [disabled]="current.productIndex == null || current.weight < 1"
+                    [disabled]="current.chosenProduct == null || current.weight < 1"
                     (click)="addProduct()">
                     +
                   </ion-button>
