@@ -15,6 +15,8 @@ export class BalancePage implements OnInit {
   public addedProducts = {};
   public addedProductsIndexes = {};
 
+  public selectProducts = {};
+
   public current = {
     productType: "",
     productIndex: null,
@@ -41,6 +43,7 @@ export class BalancePage implements OnInit {
     for(let typeIndex in this.macronutrientsService.Types){
       let macronutrientLetter = this.macronutrientsService.Types[typeIndex].Letter;
       this.products[macronutrientLetter] = [];
+      this.selectProducts[macronutrientLetter] = [];
       this.addedProducts[macronutrientLetter] = [];
       this.addedProductsIndexes[macronutrientLetter] = [];
       this.blocks[macronutrientLetter] = 0;
@@ -59,7 +62,18 @@ export class BalancePage implements OnInit {
       this.productsService.sortProductsByType(unsortedDefault, this.products);
       this.productsService.sortProductsByType(unsortedUser, this.products);
 
+      for(let i = 0; i < this.macronutrientsService.Types.length; i++){
+        let type = this.macronutrientsService.Types[i].Letter;
+        for(let k = 0; k < this.products[type].length; k++){
+          this.selectProducts[type].push({
+            id: k,
+            name: this.products[type][k].Name
+          })
+        }
+      }
+
       console.log("***Sorted: ", this.products);
+      console.log("***Products for selectable: ", this.selectProducts)
 
     })
 
@@ -79,13 +93,13 @@ export class BalancePage implements OnInit {
   }
 
   async setCurrentProduct($event){
-    let productToAddIndex = $event.target.value;
+    let productToAddIndex = this.current.productIndex.id;
     let currentProduct = this.getProductByIndex(this.current.productType, productToAddIndex);
     console.log(currentProduct)
 
     if(this.addedProductsIndexes[currentProduct.Type].indexOf(productToAddIndex) < 0){
 
-      this.current.productIndex = $event.target.value;
+      // this.current.productIndex = $event.target.value;
       this.current.productFor1Block = 
         this.macronutrientsService.For1Block[this.current.productType] / 
         currentProduct.Value * 100;

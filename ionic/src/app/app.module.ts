@@ -12,6 +12,8 @@ import { ComponentsModule } from './components/components.module';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { IonicSelectableModule } from 'ionic-selectable';
+
 import { ConnectToServerService } from './services/connectToServer.service';
 
 @NgModule({
@@ -22,7 +24,8 @@ import { ConnectToServerService } from './services/connectToServer.service';
     IonicModule.forRoot(),
     AppRoutingModule,
     ComponentsModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicSelectableModule
   ],
   providers: [
     StatusBar,

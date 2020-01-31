@@ -8,6 +8,8 @@ import { ComponentsModule } from '../components/components.module';
 
 import { BalancePageRoutingModule } from './balance-routing.module';
 
+import { IonicSelectableModule } from 'ionic-selectable';
+
 import { BalancePage } from './balance.page';
 
 @NgModule({
@@ -16,7 +18,8 @@ import { BalancePage } from './balance.page';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    BalancePageRoutingModule
+    BalancePageRoutingModule,
+    IonicSelectableModule
   ],
   declarations: [BalancePage]
 })

@@ -40,7 +40,7 @@
 
               <div *ngIf="current.productType == macronutrient.Letter">
 
-                <ion-select 
+                <!-- <ion-select 
                   placeholder="Избери продукт"
                   (ionChange)="setCurrentProduct($event)">
                   <ion-select-option 
@@ -48,7 +48,16 @@
                     [value]="i">
                     {{ product.Name }}
                   </ion-select-option>
-                </ion-select>
+                </ion-select> -->
+
+                <ionic-selectable
+                  [(ngModel)]="current.productIndex"
+                  [items]="selectProducts[macronutrient.Letter]"
+                  itemValueField="id"
+                  itemTextField="name"
+                  [canSearch]="true"
+                  (onChange)="setCurrentProduct($event)">
+                </ionic-selectable>
 
                 <div *ngIf="current.productIndex != null">
 
