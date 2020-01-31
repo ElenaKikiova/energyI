@@ -27,7 +27,7 @@ app.get('/getProducts', function (req, res) {
         if(err1) throw err1;
         UserIngredient.find({UserId: idCookie}, function(err2, userIngredients) {
             if(err2) throw err2;
-            res.json({defaultIngredients, userIngredients});
+            res.json({ "defaultIngredients": defaultIngredients, "userIngredients": userIngredients});
         });
     });
 })

@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { LanguageService } from '../services/language.service';
 import { MacronutrientsService } from '../services/macronutrients.service';
 import { ProductsService } from '../services/products.service';
+import { DateService } from '../services/date.service';
 
 @Component({
   selector: 'app-balance',
@@ -31,17 +32,18 @@ export class BalancePage implements OnInit {
   public blocks = {
     target: 3
   }
+
   public blocksLeft = {}
 
   constructor(
     private alertController: AlertController,
     private macronutrientsService: MacronutrientsService,
     private productsService: ProductsService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private dateService: DateService
   ) { }
 
   ngOnInit() {
-    console.log(this.macronutrientsService)
 
     this.loadProducts();
 
@@ -62,11 +64,8 @@ export class BalancePage implements OnInit {
 
       console.log("***Products: ", data);
 
-      let unsortedDefault = data.defaultIngredients;
-      let unsortedUser = data.userIngredients;
-
-      this.productsService.sortProductsByType(unsortedDefault, this.products);
-      this.productsService.sortProductsByType(unsortedUser, this.products);
+      this.productsService.sortProductsByType(data.defaultIngredients, this.products);
+      this.productsService.sortProductsByType(data.userIngredients, this.products);
 
       for(let i = 0; i < this.macronutrientsService.Types.length; i++){
         let type = this.macronutrientsService.Types[i].Letter;
@@ -101,7 +100,6 @@ export class BalancePage implements OnInit {
   async setCurrentProduct($event){
     let productToAddIndex = this.current.chosenProduct.id;
     let currentProduct = this.getProductByIndex(this.current.productType, productToAddIndex);
-    console.log(currentProduct)
 
     if(this.addedProductsIndexes[currentProduct.Type].indexOf(productToAddIndex) < 0){
 
@@ -129,17 +127,14 @@ export class BalancePage implements OnInit {
   }
 
   calculateWeight(){
-    console.log("calcW")
     if(this.current.chosenProduct != null){
       this.current.weight = Math.round(this.current.blocks * this.current.productFor1Block * 10) / 10;
     }
   }
 
   calculateBlocks(){
-    console.log("calcB")
     if(this.current.chosenProduct != null){
       this.current.blocks  = Math.round(this.current.weight / this.current.productFor1Block * 10) / 10;
-      console.log(this.current.weight / this.current.productFor1Block)
     }
   }
 
@@ -158,6 +153,32 @@ export class BalancePage implements OnInit {
 
     this.setUpCalculator(null);
 
+  }
+
+  isAllBalanced(){
+    let result = false;
+    let balanced = 0;
+    for(let i = 0; i < Object.keys(this.blocksLeft).length; i++){
+      if(this.blocksLeft[this.macronutrientsService.Types[i].Letter] == 0) balanced += 1;
+    }
+
+    if(balanced == this.macronutrientsService.Types.length){
+      result = true;
+    }
+
+    return result;
+  }
+
+  async addMealToDiary(){
+    console.log("***Adding to diary");
+
+    let mealData = {
+      "Date": this.dateService.getDateString(null)
+    }
+
+    console.log(mealData)
+
+    // this.mealService.addToDiary(mealData);
   }
 
 }

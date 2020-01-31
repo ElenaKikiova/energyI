@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class LanguageService {
 
   public lang = "BG";
-  public current = {};
+  public current;
 
   public BG = {
     "isBalanced": "Балансирано!",
