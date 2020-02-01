@@ -57,6 +57,7 @@ require('./routes/recipe');
 require('./routes/ingredients');
 require('./routes/balance');
 require('./routes/dishbalanced');
+require('./routes/diary');
 //
 //
 // require('./routes/sharedRecipes');
