@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 
 import { LanguageService } from '../../services/language.service';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'product',
@@ -14,6 +15,9 @@ export class ProductComponent implements OnInit {
   @Input() weight: Number;
   @Input() blocks: Number;
   @Input() imageName = 1;
+
+  @Output() editProductEmitter = new EventEmitter();
+  @Output() deleteProductEmitter = new EventEmitter();
   
   private imagePath;
 
@@ -38,7 +42,7 @@ export class ProductComponent implements OnInit {
         text: 'Edit',
         icon: 'create',
         handler: () => {
-          console.log('Favorite clicked');
+          this.editProductEmitter.emit()
         }
       },
       {
@@ -46,7 +50,7 @@ export class ProductComponent implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          console.log('Delete clicked');
+          this.deleteProductEmitter.emit()
         }
       }, 
       {

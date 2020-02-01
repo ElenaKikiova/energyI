@@ -120,7 +120,9 @@
                 [name]="product.info.Name"
                 [weight]="product.weight"
                 [blocks]="product.blocks"
-                [imageName]="product.info.ImageName">
+                [imageName]="product.info.ImageName"
+                (editProductEmitter)="editProduct()"
+                (deleteProductEmitter)="deleteProduct()">
 
               </product>
 

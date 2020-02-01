@@ -60,7 +60,7 @@ export class BalancePage implements OnInit {
 
   async loadProducts(){
 
-    this.productsService.getProducts().subscribe(async (data) => {
+    this.productsService.getProducts().subscribe(async (data: any) => {
 
       console.log("***Products: ", data);
 
@@ -180,6 +180,10 @@ export class BalancePage implements OnInit {
     console.log(mealData)
 
     // this.mealService.addToDiary(mealData);
+  }
+
+  async editProduct(){
+    console.log("editt")
   }
 
 }
