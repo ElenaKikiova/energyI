@@ -9,6 +9,7 @@ export class LanguageService {
   public current;
 
   public BG = {
+    "diaryPage": "Дневник",
     "isBalanced": "Балансирано!",
     "add": "Добавете",
     "reduceWith": "Намалете с ",

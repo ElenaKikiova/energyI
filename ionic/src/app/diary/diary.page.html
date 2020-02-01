@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ lang.diaryPage }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ngx-charts-heat-map
+    [view]="view"
+    [scheme]="colorScheme"
+    legend="true"
+    showXAxisLabel="true"
+    showYAxisLabel="true"
+    xAxis="true"
+    yAxis="true"
+    xAxisLabel="true"
+    yAxisLabel="true"
+    [results]="diaryData"
+    >
+  </ngx-charts-heat-map>
+
+</ion-content>

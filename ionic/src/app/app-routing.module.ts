@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'balance',
     loadChildren: () => import('./balance/balance.module').then( m => m.BalancePageModule)
+  },
+  {
+    path: 'diary',
+    loadChildren: () => import('./diary/diary.module').then( m => m.DiaryPageModule)
   }
 ];
 
