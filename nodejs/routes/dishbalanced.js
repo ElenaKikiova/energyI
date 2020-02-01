@@ -3,7 +3,8 @@ var app = require('../server');
 var getUserCookie = require('./functions/getUserCookie');
 var manageDates = require('./functions/manageDates');
 
-
+var Ingredient = require('../schemas/ingredientSchema');
+var UserDish = require('../schemas/userDishSchema');
 var UserCalendar = require('../schemas/userCalendarSchema');
 
 
@@ -13,14 +14,6 @@ var SharedRecipe = Recipes.SharedRecipe;
 
 // ROUTES
 
-var Ingredient = require('../schemas/ingredientSchema');
-var UserDish = require('../schemas/userDishSchema');
-
-app.get('/dishbalanced', function (req, res) {
-
-    var idCookie = getUserCookie("id", req);
-    res.render('dishbalanced', {userId: idCookie});
-});
 
 app.get('/loadUserDishes', function (req, res) {
     var idCookie = getUserCookie("id", req);
@@ -33,58 +26,52 @@ app.get('/loadUserDishes', function (req, res) {
 })
 
 app.post('/addMealToDiary', function(req, res){
-    var Time = req.body.Time;
-    var Blocks = parseFloat(req.body.Blocks);
-    var idCookie = getUserCookie("id", req);
+    
+    let mealData = req.body.data.mealData;
 
-    var date = new Date();
-    var Year = date.getFullYear();
-    var Month = manageDates.getMonth(date);
-    var Day = manageDates.getDay(date);
+    console.log("a");
 
-    mongoose.connect(baseUrl, { useNewUrlParser: true }, function(err, db) {
-        UserCalendar.findOne({ UserId: idCookie, Year: Year, Month: Month, Day: Day}, function(err, todayRecord){
-            if(err) throw err;
+    console.log(mealData);
 
-            // If first meal today
-            if(todayRecord == null){
-                var todayRecord = new UserCalendar({
-                    UserId: idCookie,
-                    Year: Year,
-                    Month: Month,
-                    Day: Day,
-                    Blocks: Blocks,
-                    Details: [
-                        {
-                            "time": Time,
-                            "blocks": Blocks
-                        }
-                    ]
-                });
+    UserCalendar.findOne({ UserId: idCookie, Date: mealData.Date}, function(err, todayRecord){
+        if(err) throw err;
 
-                todayRecord.save(function(err){
-                    if(err) throw err;
-                });
-            }
-            else{
-                var NewBlocksValue = todayRecord.Blocks + Blocks;
-                var NewDetails = todayRecord.Details;
-                NewDetails.push({"time": Time, "blocks": Blocks});
-
-                UserCalendar.updateOne(
-                    {_id: todayRecord.id},
+        // If first meal today
+        if(todayRecord == null){
+            let todayRecord = new UserCalendar({
+                UserId: idCookie,
+                Date: mealData.Date,
+                Blocks: mealData.Date,
+                Details: [
                     {
-                        $set: {
-                            Blocks: NewBlocksValue,
-                            Details: NewDetails
-                        }
-                    }, function(err){
-                    if(err) throw err;
-                });
-            }
+                        "time": mealData.Time,
+                        "blocks": mealData.Blocks
+                    }
+                ]
+            });
 
-            res.send();
-        });
+            todayRecord.save(function(err){
+                if(err) throw err;
+            });
+        }
+        else{
+            var NewBlocksValue = todayRecord.Blocks + mealData.Blocks;
+            var NewDetails = todayRecord.Details;
+            NewDetails.push({"time": mealData.Time, "blocks": mealData.Blocks});
+
+            UserCalendar.updateOne(
+                {_id: todayRecord.id},
+                {
+                    $set: {
+                        Blocks: NewBlocksValue,
+                        Details: NewDetails
+                    }
+                }, function(err){
+                if(err) throw err;
+            });
+        }
+
+        res.send();
     });
 })
 

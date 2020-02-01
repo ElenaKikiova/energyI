@@ -14,6 +14,7 @@ export class MealService {
   ) { }
 
   public addToDiary(mealData){
+    console.log(mealData)
     return this.http.post(this.connectToServerService.serverUrl + '/addMealToDiary',
     { data: mealData })
   }

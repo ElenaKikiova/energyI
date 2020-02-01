@@ -27,4 +27,22 @@ export class DateService {
 
   }
 
+  async getTime(dateObj){
+    let result;
+
+    if(dateObj == null){
+      dateObj = new Date();
+    }
+    
+    let hours = dateObj.getHours();
+    if(hours < 10) hours = "0" + hours;
+    let minutes = dateObj.getMinutes();
+    if(minutes < 10) minutes = "0" + minutes;
+    
+    result = hours + ":" + minutes;
+
+    return result;
+
+  }
+
 }

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 
 import { LanguageService } from '../../services/language.service';
-import { EventEmitter } from 'events';
 
 @Component({
   selector: 'product',

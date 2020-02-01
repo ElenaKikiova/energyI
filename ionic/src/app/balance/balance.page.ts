@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { LanguageService } from '../services/language.service';
 import { MacronutrientsService } from '../services/macronutrients.service';
 import { ProductsService } from '../services/products.service';
+import { MealService } from '../services/meal.service';
 import { DateService } from '../services/date.service';
 
 @Component({
@@ -42,6 +43,7 @@ export class BalancePage implements OnInit {
     private alertController: AlertController,
     private macronutrientsService: MacronutrientsService,
     private productsService: ProductsService,
+    private mealService: MealService,
     private languageService: LanguageService,
     private dateService: DateService
   ) { }
@@ -174,12 +176,17 @@ export class BalancePage implements OnInit {
     console.log("***Adding to diary");
 
     let mealData = {
-      "Date": this.dateService.getDateString(null)
+      "Time": await this.dateService.getTime(null),
+      "Blocks": this.blocks.target
     }
 
     console.log(mealData)
 
-    // this.mealService.addToDiary(mealData);
+    this.mealService.addToDiary(mealData).subscribe(async (data: any) => {
+      error => {
+        console.log("err");
+      }
+    });
   }
 
   async editProduct(type, index){

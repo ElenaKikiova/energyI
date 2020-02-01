@@ -33,54 +33,55 @@ app.get('/getProducts', function (req, res) {
 })
 
 app.post('/addMealToDiary', function(req, res){
-    var Time = req.body.Time;
-    var Blocks = parseFloat(req.body.Blocks);
-    var idCookie = getUserCookie("id", req);
+    // let idCookie = getUserCookie("id", req);
+    let idCookie = ObjectId("5e35bb98dff2f9031414ba03");
+    let mealData = req.body.data;
+
+    console.log(mealData);
 
     var date = new Date();
     var regex = new RegExp(".+(" + monthNames[date.getMonth()] + " " + manageDates.getDay(date) + " " + date.getFullYear() + ").+");
 
-    
-        UserCalendar.findOne({ UserId: idCookie, Date: {$regex: regex}}, function(err, todayRecord){
-            if(err) throw err;
+    UserCalendar.findOne({ UserId: idCookie, Date: {$regex: regex}}, function(err, todayRecord){
+        if(err) throw err;
 
-            // If first meal today
-            if(todayRecord == null){
-                var todayRecord = new UserCalendar({
-                    UserId: idCookie,
-                    Date: date,
-                    Blocks: Blocks,
-                    Details: [
-                        {
-                            "time": Time,
-                            "blocks": Blocks
-                        }
-                    ]
-                });
-
-                todayRecord.save(function(err){
-                    if(err) throw err;
-                });
-            }
-            else{
-                var NewBlocksValue = todayRecord.Blocks + Blocks;
-                var NewDetails = todayRecord.Details;
-                NewDetails.push({"time": Time, "blocks": Blocks});
-
-                UserCalendar.updateOne(
-                    {_id: todayRecord.id},
+        // If first meal today
+        if(todayRecord == null){
+            let todayRecord = new UserCalendar({
+                UserId: idCookie,
+                Date: date,
+                Blocks: mealData.Blocks,
+                Details: [
                     {
-                        $set: {
-                            Blocks: NewBlocksValue,
-                            Details: NewDetails
-                        }
-                    }, function(err){
-                    if(err) throw err;
-                });
-            }
+                        "time": mealData.Time,
+                        "blocks": mealData.Blocks
+                    }
+                ]
+            });
 
-            res.send();
-        });
+            todayRecord.save(function(err){
+                if(err) throw err;
+            });
+        }
+        else{
+            var NewBlocksValue = todayRecord.Blocks + mealData.Blocks;
+            var NewDetails = todayRecord.Details;
+            NewDetails.push({"time": mealData.Time, "blocks": mealData.Blocks});
+
+            UserCalendar.updateOne(
+                {_id: todayRecord.id},
+                {
+                    $set: {
+                        Blocks: NewBlocksValue,
+                        Details: NewDetails
+                    }
+                }, function(err){
+                if(err) throw err;
+            });
+        }
+
+        res.send();
+    });
 })
 
 app.post('/saveRecipe', function(req, res){
