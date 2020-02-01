@@ -15,46 +15,7 @@ export class DiaryPage implements OnInit {
 
   public colorScheme;
 
-  public gg = [
-    {
-      "name": "Germany",
-      "series": [
-        {
-          "name": "1990",
-          "value": 62000000
-        }
-      ]
-    },
-  
-    {
-      "name": "USA",
-      "series": [
-        {
-          "name": "1990",
-          "value": 250000000
-        }
-      ]
-    },
-  
-    {
-      "name": "France",
-      "series": [
-        {
-          "name": "1990",
-          "value": 58000000
-        }
-      ]
-    },
-    {
-      "name": "UK",
-      "series": [
-        {
-          "name": "1990",
-          "value": 57000000
-        }
-      ]
-    }
-  ];
+  public gg = [];
 
   public diaryData = [];
 
@@ -81,26 +42,87 @@ export class DiaryPage implements OnInit {
       console.log(data);
 
       this.diaryData = data.diaryData;
-
-      for(let i = 0; i < this.diaryData.length; i++){
-        let currentDiaryRecord = this.diaryData[i];
-        this.heatMapData.push({
-          "name": await this.dateService.getDateString(new Date(currentDiaryRecord.Date)),
-          "series": [
-            {
-              "name": "blocks",
-              "value": currentDiaryRecord.Blocks
-            }
-          ]
-        })
-      }
-
-      
-      console.log(this.heatMapData)
-      console.log(this.gg)
+      this.formatData();
 
     })
 
+
+  }
+
+  async formatData(){
+    
+    this.heatMapData = [];
+
+    
+
+    // let series = [];
+
+    // for(let i = 0; i < this.diaryData.length; i++){
+    //   let currentDiaryRecord = this.diaryData[i];
+    //   series.push(
+    //     {
+    //       "date": await this.dateService.getDateString(new Date(currentDiaryRecord.Date)),
+    //       "name": "blocks",
+    //       "value": currentDiaryRecord.Blocks
+    //     }
+    //   )
+    // }
+
+    // this.heatMapData.push({
+    //   "name": "Feb",
+    //   "series": series
+    // })
+
+    
+    const monthName = new Intl.DateTimeFormat('en-us', { month: 'short' });
+    const weekdayName = new Intl.DateTimeFormat('en-us', { weekday: 'short' });
+
+    // today
+    const now = new Date();
+    const todaysDay = now.getDate();
+    const thisDay = new Date(now.getFullYear(), now.getMonth(), todaysDay);
+
+    // Monday
+    const thisMonday = new Date(thisDay.getFullYear(), thisDay.getMonth(), todaysDay - thisDay.getDay() + 1);
+    const thisMondayDay = thisMonday.getDate();
+    const thisMondayYear = thisMonday.getFullYear();
+    const thisMondayMonth = thisMonday.getMonth();
+
+    // 52 weeks before monday
+    const getDate = d => new Date(thisMondayYear, thisMondayMonth, d);
+
+    for (let week = -52; week <= 0; week++) {
+      const mondayDay = thisMondayDay + (week * 7);
+      const monday = getDate(mondayDay);
+
+      // one week
+      const series = [];
+      for (let dayOfWeek = 7; dayOfWeek > 0; dayOfWeek--) {
+        const date = getDate(mondayDay - 1 + dayOfWeek);
+
+        // skip future dates
+        if (date > now) {
+          continue;
+        }
+
+        // value
+        const value = (dayOfWeek < 6) ? (date.getMonth() + 1) : 0;
+
+        series.push({
+          date,
+          name: weekdayName.format(date),
+          value
+        });
+      }
+
+      this.heatMapData.push({
+        name: monday.toString(),
+        series
+      });
+    }
+
+    console.log(this.heatMapData);
+    console.log(this.gg);
   }
 
 }
