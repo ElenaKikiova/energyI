@@ -83,6 +83,7 @@
                   itemValueField="id"
                   itemTextField="name"
                   [canSearch]="true"
+                  [disabledItems]="disabledSelectProducts[macronutrient.Letter]"
                   (onChange)="setCurrentProduct($event)">
                 </ionic-selectable>
 
@@ -107,22 +108,32 @@
                   </ion-item>
 
                   <ion-button 
+                    *ngIf="editingProductIndex == null; else editingProductButton"
                     [disabled]="current.chosenProduct == null || current.weight < 1"
                     (click)="addProduct()">
                     +
                   </ion-button>
+
+                  <ng-template #editingProductButton>
+                    <ion-button 
+                    [disabled]="current.chosenProduct == null || current.weight < 1"
+                    (click)="saveChangesToProduct()">
+                      <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                  </ng-template>
                   
                 </div>
               </div>
 
               <product
-                *ngFor="let product of addedProducts[macronutrient.Letter]"
+                *ngFor="let product of addedProducts[macronutrient.Letter]; let i = index"
+                [index]="i"
                 [name]="product.info.Name"
                 [weight]="product.weight"
                 [blocks]="product.blocks"
                 [imageName]="product.info.ImageName"
-                (editProductEmitter)="editProduct()"
-                (deleteProductEmitter)="deleteProduct()">
+                (editProductEmitter)="editProduct(macronutrient.Letter, i)"
+                (deleteProductEmitter)="deleteProduct(macronutrient.Letter, i)">
 
               </product>
 

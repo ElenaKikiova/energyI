@@ -12,8 +12,6 @@ export class LanguageService {
     "isBalanced": "Балансирано!",
     "add": "Добавете",
     "reduceWith": "Намалете с ",
-    "productAlreadyAddedError": "Този продукт вече е добавен",
-    "productAlreadyAddedErrorMessage": "Може да редактирате количеството му",
     "mealFor": "Ястие за",
     "balancePage": "Балансатор",
     "balancedPlural": "Уравновесени",

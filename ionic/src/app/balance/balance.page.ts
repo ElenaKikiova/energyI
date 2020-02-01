@@ -20,6 +20,9 @@ export class BalancePage implements OnInit {
   public addedProductsIndexes = {};
 
   public selectProducts = {};
+  public disabledSelectProducts = {};
+
+  public editingProductIndex = 0;
 
   public current = {
     productType: "",
@@ -51,6 +54,7 @@ export class BalancePage implements OnInit {
       let macronutrientLetter = this.macronutrientsService.Types[typeIndex].Letter;
       this.products[macronutrientLetter] = [];
       this.selectProducts[macronutrientLetter] = [];
+      this.disabledSelectProducts[macronutrientLetter] = [];
       this.addedProducts[macronutrientLetter] = [];
       this.addedProductsIndexes[macronutrientLetter] = [];
       this.blocks[macronutrientLetter] = 0;
@@ -95,35 +99,23 @@ export class BalancePage implements OnInit {
     this.current.productFor1Block = 0;
     this.current.blocks = 0;
     this.current.weight = 0;
+    this.editingProductIndex = null;
+  }
+
+  async calculateFor1Block(type, value){
+    return this.macronutrientsService.For1Block[type] / value * 100;
+
   }
 
   async setCurrentProduct($event){
     let productToAddIndex = this.current.chosenProduct.id;
     let currentProduct = this.getProductByIndex(this.current.productType, productToAddIndex);
 
-    if(this.addedProductsIndexes[currentProduct.Type].indexOf(productToAddIndex) < 0){
+    this.current.productFor1Block = await this.calculateFor1Block(currentProduct.Type, currentProduct.Value)
+    console.log(this.current)
+    this.current.blocks = 1;
+    this.calculateWeight();
 
-      this.current.productFor1Block = 
-        this.macronutrientsService.For1Block[this.current.productType] / 
-        currentProduct.Value * 100;
-
-      this.current.blocks = 1;
-      this.calculateWeight();
-
-    }
-    else{
-
-      this.current.chosenProduct = null;
-
-      const alert = await this.alertController.create({
-        header: this.lang.productAlreadyAddedError,
-        subHeader: this.lang.productAlreadyAddedErrorMessage,
-        buttons: ['OK']
-      });
-  
-      await alert.present();
-
-    }
   }
 
   calculateWeight(){
@@ -142,6 +134,7 @@ export class BalancePage implements OnInit {
 
     let productObj = this.getProductByIndex(this.current.productType, this.current.chosenProduct.id);
 
+
     this.addedProducts[productObj.Type].push({
       "info": productObj,
       "weight": this.current.weight,
@@ -149,6 +142,13 @@ export class BalancePage implements OnInit {
     });
 
     this.addedProductsIndexes[productObj.Type].push(this.current.chosenProduct.id);
+
+    this.disabledSelectProducts[productObj.Type].push({
+      id: this.current.chosenProduct.id,
+      name: productObj.Name
+    })
+
+    console.log(this.disabledSelectProducts);
 
     this.blocks[productObj.Type] += this.current.blocks;
 
@@ -182,8 +182,47 @@ export class BalancePage implements OnInit {
     // this.mealService.addToDiary(mealData);
   }
 
-  async editProduct(){
-    console.log("editt")
+  async editProduct(type, index){
+
+    let productObj = this.addedProducts[type][index];
+    let indexInProducts = this.addedProductsIndexes[type][index];
+
+    // Set up calculator
+    this.setUpCalculator(type);
+    this.current.chosenProduct = { id: indexInProducts, name: productObj.info.Name };
+    this.current.productFor1Block = await this.calculateFor1Block(productObj.info.Type, productObj.info.Value)
+    this.current.weight = productObj.weight;
+    this.current.blocks = productObj.blocks;
+    this.editingProductIndex = index;
   }
+
+  async saveChangesToProduct(index){
+
+    this.deleteProduct(this.current.productType, this.editingProductIndex);
+
+    this.addProduct();
+  
+  }
+
+  async deleteProduct(type, index){
+
+    let productObj = this.addedProducts[type][index];
+    let indexInSelectProducts = this.addedProductsIndexes[type][index];
+    this.addedProducts[type].splice(index, 1);
+    this.addedProductsIndexes[type].splice(index, 1);
+
+    let selectObj = this.selectProducts[type][indexInSelectProducts];
+
+    for(let i = 0; i < this.disabledSelectProducts[type].length; i++){
+      let current = this.disabledSelectProducts[type][i];
+      if(current.name == selectObj.name) {
+        this.disabledSelectProducts[type].splice(i, 1);
+        break;
+      }
+    }
+
+    this.blocks[type] -= productObj.blocks;
+  }
+
 
 }

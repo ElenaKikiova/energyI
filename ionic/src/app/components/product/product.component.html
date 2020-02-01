@@ -1,8 +1,10 @@
-<ion-card (click)="showProductOptions()">
+<ion-card (click)="showProductOptions(index)">
 
   <ion-img [src]="imagePath"></ion-img>
 
   <ion-card-content>
+
+    {{ index }}
     
     <ion-item class="ion-text-center" lines="none">
       <ion-label>{{ name }}</ion-label>

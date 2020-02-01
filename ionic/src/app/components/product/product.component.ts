@@ -11,6 +11,7 @@ import { EventEmitter } from 'events';
 })
 export class ProductComponent implements OnInit {
 
+  @Input() index: Number;
   @Input() name: String;
   @Input() weight: Number;
   @Input() blocks: Number;
@@ -33,7 +34,9 @@ export class ProductComponent implements OnInit {
     console.log(this);
   }
 
-  async showProductOptions(){
+  async showProductOptions(index){
+
+    console.log(index)
 
     const actionSheet = await this.actionSheetController.create({
       header: 'Albums',
@@ -42,7 +45,7 @@ export class ProductComponent implements OnInit {
         text: 'Edit',
         icon: 'create',
         handler: () => {
-          this.editProductEmitter.emit()
+          this.editProductEmitter.emit(index)
         }
       },
       {
@@ -50,7 +53,7 @@ export class ProductComponent implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          this.deleteProductEmitter.emit()
+          this.deleteProductEmitter.emit(index)
         }
       }, 
       {
