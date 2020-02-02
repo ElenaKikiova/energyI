@@ -4,6 +4,10 @@ import { LanguageService } from '../services/language.service';
 import { DiaryService } from '../services/diary.service';
 import { DateService } from '../services/date.service';
 
+
+const monthName = new Intl.DateTimeFormat("en-us", { month: "short" });
+const weekdayName = new Intl.DateTimeFormat("en-us", { weekday: "short" });
+
 @Component({
   selector: 'app-diary',
   templateUrl: './diary.page.html',
@@ -13,70 +17,79 @@ export class DiaryPage implements OnInit {
 
   public lang = this.languageService.current;
 
-  public colorScheme;
+  public name = 'Angular';
+  public showXAxis = true;
+  public showYAxis = true;
+  public gradient = false;
+  public showLegend = true;
+  public legendTitle = 'Legend';
+  public legendPosition = 'right';
+  public showXAxisLabel = true;
+  public tooltipDisabled = false;
+  public showText = true;
+  public xAxisLabel = 'Country';
+  public showYAxisLabel = true;
+  public yAxisLabel = 'GDP Per Capita';
+  public showGridLines = true;
+  public innerPadding = '10%';
+  public barPadding = 8;
+  public groupPadding = 16;
+  public roundDomains = false;
+  public maxRadius = 10;
+  public minRadius = 3;
+  public showSeriesOnHover = true;
+  public roundEdges: boolean = true;
+  public animations: boolean = true;
+  public xScaleMin: any;
+  public xScaleMax: any;
+  public yScaleMin: number;
+  public yScaleMax: number;
+  public showDataLabel = false;
+  public noBarWhenZero = true;
+  public trimXAxisTicks = true;
+  public trimYAxisTicks = true;
+  public rotateXAxisTicks = true;
+  public maxXAxisTickLength = 16;
+  public maxYAxisTickLength = 16;
+  public colorScheme = "vivid";
+  public schemeType: string = 'ordinal';
+  public selectedColorScheme: string;
 
-  public gg = [];
-
-  public diaryData = [];
-
-  public heatMapData = [];
+  // heatmap
+  heatmapMin: number = 0;
+  heatmapMax: number = 12;
+  calendarData: any[] = [];
 
   constructor(
-    private diaryService: DiaryService,
-    private languageService: LanguageService,
-    private dateService: DateService
-  ) { }
+    public languageService: LanguageService,
+    public diaryService: DiaryService,
+    public dateService: DateService
+  ) {
+    this.calendarData = this.getCalendarData();
+  }
 
-  ngOnInit() {
-    this.colorScheme = {
-      domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
-    };
-
-    this.getDiaryData();
+  ngOnInit(){
 
   }
 
-  async getDiaryData(){
-
-    this.diaryService.getDiaryData().subscribe(async (data: any) => {
-      console.log(data);
-
-      this.diaryData = data.diaryData;
-      this.formatData();
-
-    })
-
-
+  calendarAxisTickFormatting(mondayString: string) {
+    const monday = new Date(mondayString);
+    const month = monday.getMonth();
+    const day = monday.getDate();
+    const year = monday.getFullYear();
+    const lastSunday = new Date(year, month, day - 1);
+    const nextSunday = new Date(year, month, day + 6);
+    return lastSunday.getMonth() !== nextSunday.getMonth() ? monthName.format(nextSunday) : '';
   }
 
-  async formatData(){
-    
-    this.heatMapData = [];
+  calendarTooltipText(c): string {
+    return `
+      <span class="tooltip-label">${c.label} • ${c.cell.date.toLocaleDateString()}</span>
+      <span class="tooltip-val">${c.data.toLocaleString()}</span>
+    `;
+  }
 
-    
-
-    // let series = [];
-
-    // for(let i = 0; i < this.diaryData.length; i++){
-    //   let currentDiaryRecord = this.diaryData[i];
-    //   series.push(
-    //     {
-    //       "date": await this.dateService.getDateString(new Date(currentDiaryRecord.Date)),
-    //       "name": "blocks",
-    //       "value": currentDiaryRecord.Blocks
-    //     }
-    //   )
-    // }
-
-    // this.heatMapData.push({
-    //   "name": "Feb",
-    //   "series": series
-    // })
-
-    
-    const monthName = new Intl.DateTimeFormat('en-us', { month: 'short' });
-    const weekdayName = new Intl.DateTimeFormat('en-us', { weekday: 'short' });
-
+  getCalendarData(): any[] {
     // today
     const now = new Date();
     const todaysDay = now.getDate();
@@ -89,10 +102,10 @@ export class DiaryPage implements OnInit {
     const thisMondayMonth = thisMonday.getMonth();
 
     // 52 weeks before monday
+    const calendarData = [];
     const getDate = d => new Date(thisMondayYear, thisMondayMonth, d);
-
     for (let week = -52; week <= 0; week++) {
-      const mondayDay = thisMondayDay + (week * 7);
+      const mondayDay = thisMondayDay + week * 7;
       const monday = getDate(mondayDay);
 
       // one week
@@ -106,8 +119,8 @@ export class DiaryPage implements OnInit {
         }
 
         // value
-        const value = (dayOfWeek < 6) ? (date.getMonth() + 1) : 0;
-
+        const value = dayOfWeek < 6 ? date.getMonth() + 1 : 0;
+        
         series.push({
           date,
           name: weekdayName.format(date),
@@ -115,14 +128,13 @@ export class DiaryPage implements OnInit {
         });
       }
 
-      this.heatMapData.push({
+      calendarData.push({
         name: monday.toString(),
         series
       });
     }
 
-    console.log(this.heatMapData);
-    console.log(this.gg);
+    return calendarData;
   }
 
 }

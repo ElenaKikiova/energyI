@@ -1,0 +1,11 @@
+async getDiaryData(){
+
+    this.diaryService.getDiaryData().subscribe(async (data: any) => {
+      console.log(data);
+
+      this.diaryData = data.diaryData;
+      this.getCalendarData();
+
+    })
+    
+  }
