@@ -8,29 +8,35 @@
 </ion-header>
 
 <ion-content>
-  <ngx-charts-heat-map
-  [min]="heatmapMin"
-  [max]="heatmapMax"
-  [view]="[1100, 200]"
-  [scheme]="colorScheme"
-  [results]="calendarData"
-  [animations]="true"
-  [legend]="showLegend"
-  [gradient]="gradient"
-  [xAxis]="showXAxis"
-  [yAxis]="showYAxis"
-  [showXAxisLabel]="false"
-  [showYAxisLabel]="false"
-  [xAxisTickFormatting]="calendarAxisTickFormatting"
-  [tooltipText]="calendarTooltipText"
-  [innerPadding]="innerPadding"
-  [tooltipDisabled]="tooltipDisabled"
-  [trimXAxisTicks]="trimXAxisTicks"
-  [trimYAxisTicks]="trimYAxisTicks"
-  [rotateXAxisTicks]="rotateXAxisTicks"
-  [maxXAxisTickLength]="maxXAxisTickLength"
-  [maxYAxisTickLength]="maxYAxisTickLength"
->
-</ngx-charts-heat-map>
+
+  <div style="height: 100%; overflow-x: auto; width: 100%">
+
+    <div style="width: 100%; min-width: 1000px; min-height: 200px; max-height: 70vh;" >
+
+      <ngx-charts-heat-map
+        min="0"
+        max="16"
+        view=""
+        [scheme]="colorScheme"
+        [results]="chartData"
+        animations="true"
+        legend="false"
+        gradient=""
+        xAxis="true"
+        yAxis="true"
+        showXAxisLabel="false"
+        showYAxisLabel="false"
+        [xAxisTickFormatting]="calendarAxisTickFormatting"
+        [tooltipText]="calendarTooltipText"
+        innerPadding="7%"
+        trimXAxisTicks="true"
+        trimYAxisTicks="true"
+        rotateXAxisTicks="false"
+      >
+      </ngx-charts-heat-map>
+
+    </div>
+
+  </div>
 
 </ion-content>

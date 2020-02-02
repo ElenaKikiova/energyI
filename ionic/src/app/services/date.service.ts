@@ -45,5 +45,13 @@ export class DateService {
 
   }
 
+  async sortByDate(array){
+    array.sort(function(a, b){
+      let aValue = new Date(a.Date).getTime();
+      let bValue = new Date(b.Date).getTime();
+      return bValue - aValue;
+    })
+  }
+
 
 }
