@@ -34,6 +34,7 @@ export class LanguageService {
     ],
     "today": "Днес",
     "diaryPage": "Дневник",
+    "blocksCalendar": "Календар на блоковете",
     "noMealsToday": "Няма записи за днес",
     "isBalanced": "Балансирано!",
     "reduceWith": "Намалете с ",

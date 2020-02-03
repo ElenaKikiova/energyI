@@ -10,13 +10,12 @@
 <ion-content>
 
   <ion-card>
+
+    <ion-item color="secondary">
+      {{ lang.today }} - {{ todayData == null ? 0 : todayData.Blocks }} {{ lang.blocks }}
+    </ion-item>
     
     <ion-card-content>
-
-      <ion-item color="primary">
-        {{ lang.today }} - {{ todayData == null ? 0 : todayData.Blocks }} {{ lang.blocks }}
-      </ion-item>
-      <ion-label> </ion-label>
       
       <ion-item *ngIf="todayData == null; else showMeals">
         {{ lang.noMealsToday }}
@@ -49,34 +48,42 @@
 
   </ion-card>
 
-  <div style="height: 100%; overflow-x: auto; width: 100%">
+  <ion-card>
 
-    <div class="chart-container" >
+    <ion-item color="secondary">
+      {{ lang.blocksCalendar }}
+    </ion-item>
 
-      <ngx-charts-heat-map
-        min="0"
-        max="16"
-        view=""
-        [scheme]="colorScheme"
-        [results]="chartData"
-        animations="true"
-        showLegend="false"
-        gradient=""
-        xAxis="true"
-        yAxis="true"
-        showXAxisLabel="false"
-        showYAxisLabel="false"
-        [xAxisTickFormatting]="calendarAxisTickFormatting"
-        [tooltipText]="calendarTooltipText"
-        innerPadding="10%"
-        trimXAxisTicks="true"
-        trimYAxisTicks="true"
-        rotateXAxisTicks="false"
-      >
-      </ngx-charts-heat-map>
+    <div style="overflow-x: auto;">
 
+      <div class="chart-container">
+
+        <ngx-charts-heat-map
+          min="0"
+          max="16"
+          view=""
+          [scheme]="colorScheme"
+          [results]="chartData"
+          animations="true"
+          showLegend="false"
+          gradient=""
+          xAxis="true"
+          yAxis="true"
+          showXAxisLabel="false"
+          showYAxisLabel="false"
+          [xAxisTickFormatting]="calendarAxisTickFormatting"
+          [tooltipText]="calendarTooltipText"
+          innerPadding="10%"
+          trimXAxisTicks="true"
+          trimYAxisTicks="true"
+          rotateXAxisTicks="false"
+        >
+        </ngx-charts-heat-map>
+
+      </div>
+      
     </div>
 
-  </div>
+  </ion-card>
 
 </ion-content>
