@@ -27,8 +27,7 @@ export class DiaryPage implements OnInit {
     public languageService: LanguageService,
     public diaryService: DiaryService,
     public dateService: DateService
-  ) {
-  }
+  ) { }
 
   ngOnInit(){
     
@@ -66,12 +65,12 @@ export class DiaryPage implements OnInit {
     let thisMondayYear = thisMonday.getFullYear();
     let thisMondayMonth = thisMonday.getMonth();
 
-    // 52 weeks before monday
+    // 26 weeks (half a year) before monday
     let chartData = [];
     let getDate = d => new Date(thisMondayYear, thisMondayMonth, d);
     let getDateString = d => d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
     
-    for (let week = 0; week >= -52; week--) {
+    for (let week = 0; week >= -26; week--) {
       let mondayDay = thisMondayDay + week * 7;
       let monday = getDate(mondayDay);
 
@@ -114,20 +113,20 @@ export class DiaryPage implements OnInit {
     }
   }
 
-  calendarAxisTickFormatting(mondayString: string) {
+  calendarAxisTickFormatting(mondayString) {
     let monday = new Date(mondayString);
     let month = monday.getMonth();
     let day = monday.getDate();
     let year = monday.getFullYear();
     let lastSunday = new Date(year, month, day - 1);
     let nextSunday = new Date(year, month, day + 6);
-    return lastSunday.getMonth() !== nextSunday.getMonth() ? monthNames[month] + " " + year : '';
+    return lastSunday.getMonth() !== nextSunday.getMonth() ? monthNames[month]  : '';
   }
 
-  calendarTooltipText(c): string {
+  calendarTooltipText(c) {
     return `
-      <span class="tooltip-label">${c.label} • ${c.cell.date.toLocaleDateString()}</span>
-      <span class="tooltip-val">${c.data.toLocaleString()}</span>
+      <span class="tooltip-label">${c.cell.date.toLocaleDateString()}</span>
+      <span class="tooltip-val">${c.data} </span>
     `;
   }
 

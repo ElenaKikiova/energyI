@@ -11,7 +11,7 @@
 
   <div style="height: 100%; overflow-x: auto; width: 100%">
 
-    <div style="width: 100%; min-width: 1000px; min-height: 200px; max-height: 70vh;" >
+    <div class="chart-container" >
 
       <ngx-charts-heat-map
         min="0"
@@ -20,7 +20,7 @@
         [scheme]="colorScheme"
         [results]="chartData"
         animations="true"
-        legend="false"
+        showLegend="false"
         gradient=""
         xAxis="true"
         yAxis="true"
@@ -28,7 +28,7 @@
         showYAxisLabel="false"
         [xAxisTickFormatting]="calendarAxisTickFormatting"
         [tooltipText]="calendarTooltipText"
-        innerPadding="7%"
+        innerPadding="10%"
         trimXAxisTicks="true"
         trimYAxisTicks="true"
         rotateXAxisTicks="false"
