@@ -1,15 +1,20 @@
 ion-card{
-    max-width: 130px;
+    width: 130px;
 }
 
 ion-img{
-    max-width: 100px;
+    width: 100px;
     margin: auto;
     margin-top: 5px;
 }
 
 ion-card, ion-card-content{
     padding: 0px !important;
+}
+
+ion-label{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 ion-item{

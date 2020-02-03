@@ -88,7 +88,6 @@ export class BalancePage implements OnInit {
 
   }
 
-
   getProductByIndex(type, index){
     return this.products[type][index];
   }

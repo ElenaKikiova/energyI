@@ -30,6 +30,11 @@ export class AppComponent {
       title: this.lang.diaryPage,
       url: '/diary',
       icon: 'book'
+    },
+    {
+      title: this.lang.productsPage,
+      url: '/products',
+      icon: 'nutrition'
     }
   ];
 

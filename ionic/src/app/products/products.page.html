@@ -1,9 +1,71 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>products</ion-title>
+    <ion-title>{{ lang.productsPage }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <!-- <ion-card *ngFor="let macronutrient of macronutrientsService.Types">
+
+    <ion-card-content>
+
+      <ion-grid *ngFor="let product of products[macronutrient.Letter]">
+        <ion-row>
+          <ion-col>{{ product.Name}}</ion-col>
+          <ion-col>{{ product.Value }}</ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-card-content>
+
+  </ion-card> -->
+
+  <ion-card>
+
+    <ngx-datatable
+    #myTable
+    class='material expandable'
+    [rows]="products"
+    [groupRowsBy]="'Type'"
+    [columnMode]="'force'"
+    [scrollbarH]="true"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [rowHeight]="40"
+    [limit]="4"
+    [groupExpansionDefault]="true">
+    <!-- Group Header Template -->
+    <ngx-datatable-group-header [rowHeight]="50" #myGroupHeader (toggle)="onDetailToggle($event)">
+      <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
+        <div style="padding-left:5px;">
+          <a
+            href="#"
+            [class.datatable-icon-right]="!expanded"
+            [class.datatable-icon-down]="expanded"
+            title="Expand/Collapse Group"
+            (click)="toggleExpandGroup(group)">
+            <b>Type: {{group.value[0].type}}</b>
+          </a>                          
+        </div>
+      </ng-template>
+    </ngx-datatable-group-header>
+    <!-- Row Column Template -->
+    <ngx-datatable-column
+      [width]="50"
+      [resizeable]="false"
+      [sortable]="false"
+      [draggable]="false"
+      [canAutoResize]="false">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Name" prop="name" editable="true"></ngx-datatable-column>
+    <ngx-datatable-column name="Type" prop="type"></ngx-datatable-column>
+    <ngx-datatable-column name="Value" prop="value"></ngx-datatable-column>
+    </ngx-datatable-column>
+  </ngx-datatable>
+
+  </ion-card>
 
 </ion-content>

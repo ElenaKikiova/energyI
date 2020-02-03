@@ -48,7 +48,9 @@ export class LanguageService {
     "blocks": "блока",
     "gramsAbbr": "гр.",
     "blocksAbbr": "бл.",
-    "chooseProduct": "Изберете продукт"
+    "chooseProduct": "Изберете продукт",
+    "productsPage": "Продукти",
+    
   }
 
   constructor() { 
