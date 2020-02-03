@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 
 import { LanguageService } from '../services/language.service';
 import { MacronutrientsService } from '../services/macronutrients.service';
@@ -40,7 +39,6 @@ export class BalancePage implements OnInit {
   public blocksLeft = {}
 
   constructor(
-    private alertController: AlertController,
     private macronutrientsService: MacronutrientsService,
     private productsService: ProductsService,
     private mealService: MealService,

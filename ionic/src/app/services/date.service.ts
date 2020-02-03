@@ -27,6 +27,10 @@ export class DateService {
 
   }
 
+  getDateForComparison(d){
+    return d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
+  }
+
   async getTime(dateObj){
     let result;
 

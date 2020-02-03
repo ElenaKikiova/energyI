@@ -9,6 +9,46 @@
 
 <ion-content>
 
+  <ion-card>
+    
+    <ion-card-content>
+
+      <ion-item color="primary">
+        {{ lang.today }} - {{ todayData == null ? 0 : todayData.Blocks }} {{ lang.blocks }}
+      </ion-item>
+      <ion-label> </ion-label>
+      
+      <ion-item *ngIf="todayData == null; else showMeals">
+        {{ lang.noMealsToday }}
+      </ion-item>
+
+      <ng-template #showMeals>
+        <ion-item *ngFor="let meal of todayData.Details; let i = index">
+          <ion-label>{{ meal.time}} - {{ meal.blocks }} {{ lang.blocksAbbr}}</ion-label>
+          <ion-button fill="clear" (click)="deleteRecord(i)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ng-template>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col sizeSm="12" sizeMd="6">
+            <ion-button routerLink="/balance" routerDirection="root" expand="block">
+            {{ lang.toBalancePage }}
+          </ion-button></ion-col>
+
+          <ion-col sizeSm="12" sizeMd="6">
+            <ion-button (click)="addBlocksManually()" expand="block">
+            {{ lang.addBlocksManually }}
+          </ion-button></ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-card-content>
+
+  </ion-card>
+
   <div style="height: 100%; overflow-x: auto; width: 100%">
 
     <div class="chart-container" >

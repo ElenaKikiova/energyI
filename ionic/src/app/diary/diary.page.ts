@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 import { LanguageService } from '../services/language.service';
 import { DiaryService } from '../services/diary.service';
 import { DateService } from '../services/date.service';
+import { MealService } from '../services/meal.service';
 
 let monthNames = [];
 
@@ -20,14 +22,21 @@ export class DiaryPage implements OnInit {
 
   public diaryData = [];
 
+  public todayData = null;
+  public todayDateString = this.dateService.getDateForComparison(new Date());
+
   public chartData: any[] = [];
   public colorScheme = { domain: [] }
 
   constructor(
-    public languageService: LanguageService,
-    public diaryService: DiaryService,
-    public dateService: DateService
-  ) { }
+    private languageService: LanguageService,
+    private diaryService: DiaryService,
+    private dateService: DateService,
+    private alertController: AlertController,
+    private mealService: MealService
+  ) { 
+    
+  }
 
   ngOnInit(){
     
@@ -37,6 +46,74 @@ export class DiaryPage implements OnInit {
     this.getDiaryData();
   }
 
+  async addBlocksManually(){
+
+    const alert = await this.alertController.create({
+      header: this.lang.addBlocksManually,
+      inputs: [
+        {
+          name: 'blocks',
+          type: 'number',
+          placeholder: '3'
+        }
+      ],
+      buttons: [
+        {
+          text: this.lang.cancel,
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: this.lang.add,
+          handler: async (input) => {
+            let blocksToAdd = parseFloat(input.blocks);
+            if(blocksToAdd > 0){
+              this.mealService.addToDiary({
+                "Time": await this.dateService.getTime(null),
+                "Blocks": blocksToAdd
+              }).subscribe(async (data: any) => {
+                  this.diaryData[0].Blocks += blocksToAdd;
+                  this.todayData.Details.push({
+                    "time": await this.dateService.getTime(null),
+                    "blocks": blocksToAdd
+                  });
+                  this.formatChartData();
+                },
+                error => {
+                  console.log("err");
+                }
+              );
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+
+  }
+
+  async deleteRecord(i){
+
+    let record = this.todayData.Details[i];
+    console.log(record, i)
+
+    let newBlocks = this.diaryData[0].Blocks - parseFloat(record.blocks);
+
+    this.mealService.deleteFromDiary({
+      mealIndex: i,
+      newBlocks: newBlocks
+    }).subscribe(async (data: any) => {
+      this.diaryData[0].Blocks -= parseFloat(record.blocks);
+      this.todayData.Details.splice(i, 1);
+      this.formatChartData();
+    },
+    error => {
+      console.log("err");
+    }
+  );
+
+  }
+
   async getDiaryData(){
 
     this.diaryService.getDiaryData().subscribe(async (data: any) => {
@@ -44,9 +121,12 @@ export class DiaryPage implements OnInit {
 
       this.diaryData = data.diaryData;
 
+      this.todayData = this.diaryData.filter((record) => 
+        this.dateService.getDateForComparison(new Date(record.Date)) == this.todayDateString)[0];
+
       this.dateService.sortByDate(this.diaryData);
 
-      this.chartData = await this.formatChartData();
+      this.formatChartData();
     })
     
   }
@@ -68,7 +148,6 @@ export class DiaryPage implements OnInit {
     // 26 weeks (half a year) before monday
     let chartData = [];
     let getDate = d => new Date(thisMondayYear, thisMondayMonth, d);
-    let getDateString = d => d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
     
     for (let week = 0; week >= -26; week--) {
       let mondayDay = thisMondayDay + week * 7;
@@ -83,7 +162,7 @@ export class DiaryPage implements OnInit {
         // let value = dayOfWeek < 6 ? date.getMonth() + 1 : 0;
         let value = 0;
         let findValue = this.diaryData.filter((record) => 
-          getDateString(new Date(record.Date)) == getDateString(date));
+          this.dateService.getDateForComparison(new Date(record.Date)) == this.dateService.getDateForComparison(date));
         if(findValue.length > 0){
           value = findValue[0].Blocks;
         }
@@ -101,7 +180,7 @@ export class DiaryPage implements OnInit {
       });
     }
 
-    return chartData;
+    this.chartData = chartData;
   }
 
   async generateColorScheme(){

@@ -19,4 +19,9 @@ export class MealService {
     { data: mealData })
   }
 
+  public deleteFromDiary(data){
+    return this.http.post(this.connectToServerService.serverUrl + '/deleteFromDiary', 
+    { data: data })
+  }
+
 }
