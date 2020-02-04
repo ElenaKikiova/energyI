@@ -1,0 +1,12 @@
+ion-col{
+    padding: 0.5rem;
+    color: black;
+    font-size: 1rem !important;
+}
+
+.typeCol, .valueCol{
+    width: 60px !important;
+}
+.nameCol{
+    width: calc(100% - 120px) !important;
+}

@@ -25,5 +25,17 @@ export class MacronutrientsService {
     }
   ]
 
+  public Colors = {
+    "P": "primary",
+    "C": "secondary",
+    "F": "tertiary"
+  }
+
+  public showingOrderInProductsPage = {
+    "C": 0,
+    "P": 1,
+    "F": 2
+  }
+
   constructor() { }
 }

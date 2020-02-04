@@ -11,9 +11,18 @@ import { ProductsService } from '../services/products.service';
 })
 export class ProductsPage implements OnInit {
 
+
   public lang = this.languageService.current;
-  
-  public products = {};
+
+  public columns = [
+    { name: this.lang.product, prop: "Name" },
+    { name: this.lang.type, prop: "Type" },
+    { name: this.lang.value, prop: "Value" }
+  ];
+
+  public products = [];
+
+  public rows = [];
 
   constructor(
     private languageService: LanguageService,
@@ -23,32 +32,41 @@ export class ProductsPage implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
-
-    // for(let typeIndex in this.macronutrientsService.Types){
-    //   let macronutrientLetter = this.macronutrientsService.Types[typeIndex].Letter;
-    //   this.products[macronutrientLetter] = [];
-    // }
   }
     
   async loadProducts(){
 
     this.productsService.getProducts().subscribe(async (data: any) => {
 
+
+      let rawData = data.defaultIngredients;
+      
+      this.products = rawData.sort((a, b) => {
+        let sortByType = this.macronutrientsService.showingOrderInProductsPage[a.Type] - this.macronutrientsService.showingOrderInProductsPage[b.Type];
+        let sortByName = a.Name.localeCompare(b.Name);
+        return sortByType || sortByName
+      })
+
+      this.rows = this.products;
+
       console.log("***Products: ", data);
-
-      this.products = data.defaultIngredients;
-
-      // this.productsService.sortProductsByType(data.defaultIngredients, this.products);
-      // this.productsService.sortProductsByType(data.userIngredients, this.products);
-
-      // for(let i = 0; i < this.macronutrientsService.Types.length; i++){
-      //   let type = this.macronutrientsService.Types[i].Letter;
-      // }
-
-      console.log("***Sorted: ", this.products);
+      
+      console.log("***Rows: ", this.products);
 
     })
 
+  }
+
+  async updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    // Filter products by name
+    let filtered = this.products.filter((product) => {
+      return product.Name.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // Update rows
+    this.rows = filtered;
   }
 
 }

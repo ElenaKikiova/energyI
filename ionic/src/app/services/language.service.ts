@@ -32,6 +32,11 @@ export class LanguageService {
       "Ное",
       "Дек"
     ],
+    "macronutirentLetters": {
+      "P": "П",
+      "C": "В",
+      "F": "М"
+    },
     "today": "Днес",
     "diaryPage": "Дневник",
     "blocksCalendar": "Календар на блоковете",
@@ -50,6 +55,9 @@ export class LanguageService {
     "blocksAbbr": "бл.",
     "chooseProduct": "Изберете продукт",
     "productsPage": "Продукти",
+    "product": "Продукт",
+    "type": "Тип",
+    "value": "Стойност за 100г."
     
   }
 
