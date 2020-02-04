@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 import { LanguageService } from '../services/language.service';
 import { MacronutrientsService } from '../services/macronutrients.service';
@@ -33,7 +34,8 @@ export class ProductsPage implements OnInit {
   constructor(
     private languageService: LanguageService,
     private productsService: ProductsService,
-    private macronutrientsService: MacronutrientsService
+    private macronutrientsService: MacronutrientsService,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -93,6 +95,32 @@ export class ProductsPage implements OnInit {
 
     // Update rows
     this.rows = filtered;
+  }
+
+  async showProductData(product){
+
+    console.log(product);
+
+    const alert = await this.alertController.create({
+      header: this.lang.addBlocksManually,
+      inputs: [
+        {
+          name: 'blocks',
+          type: 'number',
+          placeholder: '3'
+        }
+      ],
+      buttons: [
+        {
+          text: this.lang.cancel,
+          role: 'cancel',
+          cssClass: 'secondary'
+        }
+      ]
+    });
+
+    await alert.present();
+
   }
 
 }
