@@ -24,6 +24,12 @@ export class ProductsPage implements OnInit {
 
   public rows = [];
 
+  public sorted = {
+    "Type": -1,
+    "Name": -1,
+    "Value": -1
+  }
+
   constructor(
     private languageService: LanguageService,
     private productsService: ProductsService,
@@ -33,19 +39,39 @@ export class ProductsPage implements OnInit {
   ngOnInit() {
     this.loadProducts();
   }
+
+  async sortByCol(col){
+    this.products = this.products.sort((a, b) => {
+      let typeA = this.macronutrientsService.showingOrderInProductsPage[a.Type];
+      let typeB = this.macronutrientsService.showingOrderInProductsPage[b.Type];
+      let sorted;
+      
+      if(col == 'Type') {
+        if(this.sorted.Type == 1) sorted = typeB - typeA;
+        else sorted = typeA - typeB;
+      }
+      else if(col == 'Name') {
+        if(this.sorted.Name == 1) sorted = b.Name.localeCompare(a.Name);
+        else sorted = a.Name.localeCompare(b.Name);
+      }
+      else {
+        if(this.sorted.Value == 1) sorted = b.Value - a.Value;
+        else sorted = a.Value - b.Value;
+      }
+      return sorted;
+    })
+
+    this.sorted[col] *= -1;
+  }
     
   async loadProducts(){
 
     this.productsService.getProducts().subscribe(async (data: any) => {
 
 
-      let rawData = data.defaultIngredients;
-      
-      this.products = rawData.sort((a, b) => {
-        let sortByType = this.macronutrientsService.showingOrderInProductsPage[a.Type] - this.macronutrientsService.showingOrderInProductsPage[b.Type];
-        let sortByName = a.Name.localeCompare(b.Name);
-        return sortByType || sortByName
-      })
+      this.products = data.defaultIngredients;
+    
+      this.sortByCol('Type');
 
       this.rows = this.products;
 

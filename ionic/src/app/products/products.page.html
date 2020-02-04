@@ -6,42 +6,25 @@
 
 <ion-content>
 
-  <!-- <ion-card *ngFor="let macronutrient of macronutrientsService.Types">
-
-    <ion-card-content>
-
-      <ion-grid *ngFor="let product of products[macronutrient.Letter]">
-        <ion-row>
-          <ion-col>{{ product.Name}}</ion-col>
-          <ion-col>{{ product.Value }}</ion-col>
-        </ion-row>
-      </ion-grid>
-
-    </ion-card-content>
-
-  </ion-card> -->
-
   <ion-card>
 
-    <input
-      type="text"
-      style="padding:8px;margin:15px auto;width:30%;"
-      placeholder="Type to filter the name column..."
-      (keyup)="updateFilter($event)"
-    />
+    <ion-searchbar 
+      (ionChange)="updateFilter($event)"
+      [placeholder]="lang.search"
+    ></ion-searchbar>
 
     <ion-grid>
 
       <ion-row>
-        <ion-col class="typeCol">
+        <ion-col class="typeCol" (click)="sortByCol('Type')">
           {{ lang.type }}
         </ion-col>
 
-        <ion-col class="nameCol">
+        <ion-col class="nameCol" (click)="sortByCol('Name')">
           {{ lang.product }}
         </ion-col>
 
-        <ion-col class="valueCol">
+        <ion-col class="valueCol" (click)="sortByCol('Value')">
           {{ lang.value }}
         </ion-col>
       </ion-row>

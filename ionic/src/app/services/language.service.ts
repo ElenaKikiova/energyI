@@ -57,8 +57,8 @@ export class LanguageService {
     "productsPage": "Продукти",
     "product": "Продукт",
     "type": "Тип",
-    "value": "Стойност за 100г."
-    
+    "value": "Стойност за 100г.",
+    "search": "Търсене"    
   }
 
   constructor() { 
