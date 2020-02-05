@@ -17,7 +17,7 @@
     
     <ion-card-content>
       
-      <ion-item *ngIf="todayData == null; else showMeals">
+      <ion-item *ngIf="todayData.Details.length == 0; else showMeals">
         {{ lang.noMealsToday }}
       </ion-item>
 

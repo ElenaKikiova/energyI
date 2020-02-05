@@ -22,7 +22,7 @@ export class DiaryPage implements OnInit {
 
   public diaryData = [];
 
-  public todayData = null;
+  public todayData = { Details: [] };
   public todayDateString = this.dateService.getDateForComparison(new Date());
 
   public chartData: any[] = [];
@@ -199,7 +199,7 @@ export class DiaryPage implements OnInit {
     let year = monday.getFullYear();
     let lastSunday = new Date(year, month, day - 1);
     let nextSunday = new Date(year, month, day + 6);
-    return lastSunday.getMonth() !== nextSunday.getMonth() ? monthNames[month]  : '';
+    return day > 12 && day < 20 ? monthNames[month]  : '';
   }
 
   calendarTooltipText(c) {
