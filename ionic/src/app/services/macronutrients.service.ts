@@ -9,17 +9,14 @@ export class MacronutrientsService {
 
   public Types = [
     { 
-      "Name": "Протеини",
       "Letter": "P",
       "For1Block": this.For1Block.P
     },
     { 
-      "Name": "Въглехидрати",
       "Letter": "C",
       "For1Block": this.For1Block.C
     },
     { 
-      "Name": "Мазнини",
       "Letter": "F",
       "For1Block": this.For1Block.F
     }

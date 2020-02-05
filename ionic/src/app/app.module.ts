@@ -16,8 +16,6 @@ import { IonicSelectableModule } from 'ionic-selectable';
 
 import { ConnectToServerService } from './services/connectToServer.service';
 
-import { ProductInfoPage } from './products/productInfo/productInfo.page';
-
 @NgModule({
   declarations: [ AppComponent ],
   imports: [

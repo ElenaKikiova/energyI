@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 import { LanguageService } from '../services/language.service';
 import { MacronutrientsService } from '../services/macronutrients.service';
 import { ProductsService } from '../services/products.service';
-
-import { ProductInfoPage } from './productInfo/productInfo.page';
 
 @Component({
   selector: 'app-products',
@@ -37,7 +35,7 @@ export class ProductsPage implements OnInit {
     private languageService: LanguageService,
     private productsService: ProductsService,
     private macronutrientsService: MacronutrientsService,
-    private modalController: ModalController
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -103,10 +101,30 @@ export class ProductsPage implements OnInit {
 
     console.log(product);
 
-    const modal = await this.modalController.create({
-      component: ProductInfoPage
+    let typeColor = this.macronutrientsService.Colors[product.Type];
+    let typeName = this.lang.macronutrientNames[product.Type];
+    let for1Block = Math.round(this.macronutrientsService.For1Block[product.Type] / product.Value * 100);
+    console.log(typeColor)
+
+    const alert = await this.alertController.create({
+      header: product.Name,
+      cssClass: 'productAlert',
+      message: `<div style="display: flex">
+        <ion-img src="../assets/images/products/${product.ImageName}.png"></ion-img>
+        </div>
+        <ion-chip color="${typeColor}">
+          ${this.lang.macronutrientNames[product.Type]}
+        </ion-chip>
+        <div class="productInfo">
+          ${product.Value} ${this.lang.gramsAbbr} ${this.lang.in} 100 ${this.lang.gramsAbbr}
+        </div>
+        <div class="productInfo">
+          ${for1Block} ${this.lang.gramsAbbr} = 1 ${this.lang.blocksAbbr}
+        </div>`,
+      buttons: ['OK']
     });
-    return await modal.present();
+
+    await alert.present();
 
   }
 

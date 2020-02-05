@@ -24,3 +24,24 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.productAlert{
+    h2{
+        text-align: center;
+    }
+
+    text-align: center;
+
+    ion-img{
+        height: 100px;
+        width: 100px;
+        margin: auto;
+    }
+
+    .productInfo{
+      display: block !important;
+      line-height: 2.5rem;
+      color: black !important;
+    }
+
+  }

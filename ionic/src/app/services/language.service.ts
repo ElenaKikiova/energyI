@@ -32,10 +32,15 @@ export class LanguageService {
       "Ное",
       "Дек"
     ],
-    "macronutirentLetters": {
+    "macronutrientLetters": {
       "P": "П",
       "C": "В",
       "F": "М"
+    },
+    "macronutrientNames": {
+      "P": "Протеини",
+      "C": "Въглехидрати",
+      "F": "Мазнини"
     },
     "today": "Днес",
     "diaryPage": "Дневник",
@@ -51,6 +56,7 @@ export class LanguageService {
     "cancel": "Отказ",
     "balancedPlural": "Уравновесени",
     "blocks": "блока",
+    "in": "в",
     "gramsAbbr": "гр.",
     "blocksAbbr": "бл.",
     "chooseProduct": "Изберете продукт",

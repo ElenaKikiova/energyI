@@ -32,7 +32,7 @@
       <ion-row *ngFor="let product of rows" (click)="showProductData(product)">
         <ion-col class="typeCol">
           <ion-chip [color]="macronutrientsService.Colors[product.Type]">
-            {{ lang.macronutirentLetters[product.Type] }}
+            {{ lang.macronutrientLetters[product.Type] }}
           </ion-chip>
         </ion-col>
 

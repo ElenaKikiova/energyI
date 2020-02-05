@@ -8,7 +8,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { IonicModule } from '@ionic/angular';
 
 import { ProductsPage } from './products.page';
-import { ProductInfoPage } from './productInfo/productInfo.page';
 
 
 const routes: Routes = [
@@ -19,15 +18,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ProductsPage, ProductInfoPage],
-  entryComponents: [ProductInfoPage],
+  declarations: [ProductsPage ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     NgxDatatableModule,
     RouterModule.forChild(routes)
-  ],
-  exports: [ProductInfoPage]
+  ]
 })
 export class ProductsPageModule {}
