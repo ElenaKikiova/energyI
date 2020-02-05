@@ -185,7 +185,7 @@ export class DiaryPage implements OnInit {
 
   async generateColorScheme(){
     let hue = 0;
-    this.colorScheme.domain[0] = "#cccccc";
+    this.colorScheme.domain[0] = "#dddddd";
     for(let i = 1; i < 15; i++){
       this.colorScheme.domain.push("hsl(" + hue + ", 100%, 50%)");
       hue += 10;
