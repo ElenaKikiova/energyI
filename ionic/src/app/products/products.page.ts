@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 import { LanguageService } from '../services/language.service';
 import { MacronutrientsService } from '../services/macronutrients.service';
 import { ProductsService } from '../services/products.service';
+
+import { ProductInfoPage } from './productInfo/productInfo.page';
 
 @Component({
   selector: 'app-products',
@@ -35,7 +37,7 @@ export class ProductsPage implements OnInit {
     private languageService: LanguageService,
     private productsService: ProductsService,
     private macronutrientsService: MacronutrientsService,
-    private alertController: AlertController
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -101,25 +103,10 @@ export class ProductsPage implements OnInit {
 
     console.log(product);
 
-    const alert = await this.alertController.create({
-      header: this.lang.addBlocksManually,
-      inputs: [
-        {
-          name: 'blocks',
-          type: 'number',
-          placeholder: '3'
-        }
-      ],
-      buttons: [
-        {
-          text: this.lang.cancel,
-          role: 'cancel',
-          cssClass: 'secondary'
-        }
-      ]
+    const modal = await this.modalController.create({
+      component: ProductInfoPage
     });
-
-    await alert.present();
+    return await modal.present();
 
   }
 

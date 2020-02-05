@@ -16,9 +16,10 @@ import { IonicSelectableModule } from 'ionic-selectable';
 
 import { ConnectToServerService } from './services/connectToServer.service';
 
+import { ProductInfoPage } from './products/productInfo/productInfo.page';
+
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [ AppComponent ],
   imports: [
     BrowserAnimationsModule,
     IonicModule.forRoot(),
@@ -33,6 +34,7 @@ import { ConnectToServerService } from './services/connectToServer.service';
     ConnectToServerService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
