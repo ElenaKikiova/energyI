@@ -1,16 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
 import { ComponentsModule } from '../components/components.module';
 
-import { BalancePageRoutingModule } from './balance-routing.module';
-
 import { IonicSelectableModule } from 'ionic-selectable';
 
 import { BalancePage } from './balance.page';
+
+
+const routes: Routes = [
+  {
+    path: '',
+    component: BalancePage
+  }
+];
 
 @NgModule({
   imports: [
@@ -18,8 +25,8 @@ import { BalancePage } from './balance.page';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    BalancePageRoutingModule,
-    IonicSelectableModule
+    IonicSelectableModule,
+    RouterModule.forChild(routes)
   ],
   declarations: [BalancePage]
 })

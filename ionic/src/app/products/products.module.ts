@@ -1,14 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Routes, RouterModule } from '@angular/router';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProductsPageRoutingModule } from './products-routing.module';
-
 import { ProductsPage } from './products.page';
+
+
+const routes: Routes = [
+  {
+    path: '',
+    component: ProductsPage
+  }
+];
 
 @NgModule({
   imports: [
@@ -16,7 +23,7 @@ import { ProductsPage } from './products.page';
     FormsModule,
     IonicModule,
     NgxDatatableModule,
-    ProductsPageRoutingModule
+    RouterModule.forChild(routes)
   ],
   declarations: [ProductsPage]
 })
