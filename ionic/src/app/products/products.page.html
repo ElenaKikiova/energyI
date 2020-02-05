@@ -1,12 +1,14 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>{{ lang.productsPage }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-card>
 
     <ion-searchbar 
       (ionChange)="updateFilter($event)"
@@ -47,29 +49,5 @@
 
     </ion-grid>
 
-    <!-- <ngx-datatable 
-      #productsTable
-      [rows]="products"
-      [columns]="columns"
-     >
-
-      <ngx-datatable-group-header [rowHeight]="50">
-        <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template (toggle)="onDetailToggle($event)">
-          <div style="padding-left:5px;">
-            <a
-              href="#"
-              [class.datatable-icon-right]="!expanded"
-              [class.datatable-icon-down]="expanded"
-              title="Expand/Collapse Group"
-              (click)="toggleExpandGroup(group)">
-              <b>Type: {{group.value[0].type}}</b>
-            </a>                          
-          </div>
-        </ng-template>
-      </ngx-datatable-group-header>
-
-    </ngx-datatable> -->
-
-  </ion-card>
 
 </ion-content>

@@ -1,7 +1,13 @@
+ion-row{
+  border-bottom: 2px dashed white !important;
+}
+
 ion-col{
   padding: 0.5rem;
   color: black;
   font-size: 1rem !important;
+  display: flex !important;
+  align-items: center;
 }
 
 .typeCol, .valueCol{

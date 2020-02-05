@@ -25,6 +25,23 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+ion-menu ion-content{
+  --background: white !important;
+}
+
+ion-content{
+  --background: url('./assets/images/background.png')
+}
+
+ion-card{
+  background-color: white !important;
+}
+
+ion-list, ion-item{
+  border-color: rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+}
+
 .productAlert{
     h2{
         text-align: center;

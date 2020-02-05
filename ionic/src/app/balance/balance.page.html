@@ -12,27 +12,26 @@
   <ion-grid>
 
     <ion-row>
-      <ion-col 
-        sizeLg="6" offsetLg="3"
-        sizeMd="8" offsetMd="2"
-        sizeSm="12">
-        <ion-toolbar>
-          <ion-item>
-            <ion-label> {{lang.mealFor}} </ion-label>
-            <ion-input type="number" [(ngModel)]="blocks.target" style="max-width: 50px"></ion-input>
-            <ion-label> {{lang.blocks}} </ion-label>
-          </ion-item>
-          <ion-buttons slot="end">
-            <ion-button 
-              color="primary" 
-              fill="solid" 
-              [disabled]="!isAllBalanced()"
-              (click)="addMealToDiary()"
-            >
-              <ion-icon name="add"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
+      <ion-col>
+        <ion-card>
+          <ion-card-content>
+            <ion-item style="display: flex; justify-content: center;">
+              <ion-label> {{lang.mealFor}} </ion-label>
+              <ion-input type="number" [(ngModel)]="blocks.target" style="max-width: 50px"></ion-input>
+              <ion-label> {{lang.blocks}} </ion-label>
+            </ion-item>
+            <ion-buttons slot="end">
+              <ion-button 
+                color="primary" 
+                fill="solid" 
+                [disabled]="!isAllBalanced()"
+                (click)="addMealToDiary()"
+              >
+                <ion-icon name="add"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
 
@@ -45,8 +44,11 @@
 
           <ion-card>
 
+            <ion-item [color]="macronutrientsService.Colors[macronutrient.Letter]">
+              {{ lang.macronutrientNames[macronutrient.Letter] }} 
+            </ion-item>
+
             <ion-card-header> 
-              <ion-item>{{ macronutrient.Name }} </ion-item>
               <ion-item>
                 {{ lang.balancedPlural }}: {{ blocks[macronutrient.Letter] }} {{ lang.blocks }} 
               </ion-item>
@@ -57,17 +59,17 @@
                 [(ngModel)]="blocksLeft[macronutrient.Letter]"
               ></ion-input>
 
-              <ion-item color="warning" *ngIf="blocksLeft[macronutrient.Letter] > 0">
+              <ion-chip color="warning" *ngIf="blocksLeft[macronutrient.Letter] > 0">
                 {{ lang.add }} {{ blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
-              </ion-item>
+              </ion-chip>
 
-              <ion-item color="warning" *ngIf="blocksLeft[macronutrient.Letter] < 0">
+              <ion-chip color="warning" *ngIf="blocksLeft[macronutrient.Letter] < 0">
                 {{ lang.reduceWith }} {{ -blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
-              </ion-item>
+              </ion-chip>
 
-              <ion-item color="success" *ngIf="blocksLeft[macronutrient.Letter] == 0">
+              <ion-chip color="success" *ngIf="blocksLeft[macronutrient.Letter] == 0">
                 {{ lang.isBalanced }}
-              </ion-item>
+              </ion-chip>
 
             </ion-card-header>
 
