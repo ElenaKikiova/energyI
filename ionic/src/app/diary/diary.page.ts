@@ -22,7 +22,7 @@ export class DiaryPage implements OnInit {
 
   public diaryData = [];
 
-  public todayData = { Details: [] };
+  public todayData = { Details: []};
   public todayDateString = this.dateService.getDateForComparison(new Date());
 
   public chartData: any[] = [];
@@ -123,6 +123,8 @@ export class DiaryPage implements OnInit {
 
       this.todayData = this.diaryData.filter((record) => 
         this.dateService.getDateForComparison(new Date(record.Date)) == this.todayDateString)[0];
+
+      if(this.todayData.Details.length == 0) this.todayData.Details = [];
 
       this.dateService.sortByDate(this.diaryData);
 
