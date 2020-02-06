@@ -1,0 +1,25 @@
+#menu{
+  // width: 50px !important;
+  height: 100% !important;
+  position: fixed;
+  background-color: white;
+  z-index: 500;
+  overflow: hidden;
+  transition: 0.2s linear;
+
+  ion-button{
+    width: 200px !important;
+    display: flex;
+    align-items: center;
+    height: 50px;
+  }
+}
+
+ion-icon{
+  font-size: 40px;
+}
+
+ion-label{
+  flex-grow: 1;
+  text-align: left;
+}

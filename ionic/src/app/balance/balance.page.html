@@ -1,8 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
     <ion-title>{{lang.balancePage}}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -37,114 +34,114 @@
 
     <ion-row>
 
-        <ion-col 
-          sizeLg="4" sizeMd="4" sizeSm="12" 
-          *ngFor="let macronutrient of macronutrientsService.Types"
-          class="ion-text-center">
+      <ion-col 
+        sizeLg="4" sizeMd="4" sizeSm="12" 
+        *ngFor="let macronutrient of macronutrientsService.Types"
+        class="ion-text-center">
 
-          <ion-card>
+        <ion-card>
 
-            <ion-item [color]="macronutrientsService.Colors[macronutrient.Letter]">
-              {{ lang.macronutrientNames[macronutrient.Letter] }} 
+          <ion-item [color]="macronutrientsService.Colors[macronutrient.Letter]">
+            {{ lang.macronutrientNames[macronutrient.Letter] }} 
+          </ion-item>
+
+          <ion-card-header> 
+            <ion-item>
+              {{ lang.balancedPlural }}: {{ blocks[macronutrient.Letter] }} {{ lang.blocks }} 
             </ion-item>
 
-            <ion-card-header> 
-              <ion-item>
-                {{ lang.balancedPlural }}: {{ blocks[macronutrient.Letter] }} {{ lang.blocks }} 
-              </ion-item>
+            <ion-input 
+              hidden
+              [value]="blocks.target - blocks[macronutrient.Letter]"
+              [(ngModel)]="blocksLeft[macronutrient.Letter]"
+            ></ion-input>
 
-              <ion-input 
-                hidden
-                [value]="blocks.target - blocks[macronutrient.Letter]"
-                [(ngModel)]="blocksLeft[macronutrient.Letter]"
-              ></ion-input>
+            <ion-chip color="warning" *ngIf="blocksLeft[macronutrient.Letter] > 0">
+              {{ lang.add }} {{ blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
+            </ion-chip>
 
-              <ion-chip color="warning" *ngIf="blocksLeft[macronutrient.Letter] > 0">
-                {{ lang.add }} {{ blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
-              </ion-chip>
+            <ion-chip color="warning" *ngIf="blocksLeft[macronutrient.Letter] < 0">
+              {{ lang.reduceWith }} {{ -blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
+            </ion-chip>
 
-              <ion-chip color="warning" *ngIf="blocksLeft[macronutrient.Letter] < 0">
-                {{ lang.reduceWith }} {{ -blocksLeft[macronutrient.Letter] }} {{ lang.blocks }}
-              </ion-chip>
+            <ion-chip color="success" *ngIf="blocksLeft[macronutrient.Letter] == 0">
+              {{ lang.isBalanced }}
+            </ion-chip>
 
-              <ion-chip color="success" *ngIf="blocksLeft[macronutrient.Letter] == 0">
-                {{ lang.isBalanced }}
-              </ion-chip>
+          </ion-card-header>
 
-            </ion-card-header>
+          <ion-card-content>
 
-            <ion-card-content>
+            <ion-button
+              *ngIf="current.productType != macronutrient.Letter"
+              (click)="setUpCalculator(macronutrient.Letter)">+</ion-button>
 
-              <ion-button
-                *ngIf="current.productType != macronutrient.Letter"
-                (click)="setUpCalculator(macronutrient.Letter)">+</ion-button>
+            <div *ngIf="current.productType == macronutrient.Letter">
 
-              <div *ngIf="current.productType == macronutrient.Letter">
+              <ionic-selectable
+                [placeholder]="this.lang.chooseProduct"
+                [(ngModel)]="current.chosenProduct"
+                [items]="selectProducts[macronutrient.Letter]"
+                itemValueField="id"
+                itemTextField="name"
+                [canSearch]="true"
+                [disabledItems]="disabledSelectProducts[macronutrient.Letter]"
+                (onChange)="setCurrentProduct($event)">
+              </ionic-selectable>
 
-                <ionic-selectable
-                  [placeholder]="this.lang.chooseProduct"
-                  [(ngModel)]="current.chosenProduct"
-                  [items]="selectProducts[macronutrient.Letter]"
-                  itemValueField="id"
-                  itemTextField="name"
-                  [canSearch]="true"
-                  [disabledItems]="disabledSelectProducts[macronutrient.Letter]"
-                  (onChange)="setCurrentProduct($event)">
-                </ionic-selectable>
+              <div *ngIf="current.chosenProduct != null">
 
-                <div *ngIf="current.chosenProduct != null">
+                <ion-item>
+                  <ion-input 
+                    type="number" 
+                    step="0.1"
+                    (keyup)="calculateBlocks()"
+                    [(ngModel)]="current.weight" 
+                  ></ion-input> {{ lang.gramsAbbr }}
+                </ion-item>
 
-                  <ion-item>
-                    <ion-input 
-                      type="number" 
-                      step="0.1"
-                      (keyup)="calculateBlocks()"
-                      [(ngModel)]="current.weight" 
-                    ></ion-input> {{ lang.gramsAbbr }}
-                  </ion-item>
+                <ion-item>
+                  <ion-input 
+                    type="number" 
+                    step="0.1"
+                    (keyup)="calculateWeight()"
+                    [(ngModel)]="current.blocks" 
+                  ></ion-input> {{ lang.blocksAbbr }}
+                </ion-item>
 
-                  <ion-item>
-                    <ion-input 
-                      type="number" 
-                      step="0.1"
-                      (keyup)="calculateWeight()"
-                      [(ngModel)]="current.blocks" 
-                    ></ion-input> {{ lang.blocksAbbr }}
-                  </ion-item>
+                <ion-button 
+                  *ngIf="editingProductIndex == null; else editingProductButton"
+                  [disabled]="current.chosenProduct == null || current.weight < 1"
+                  (click)="addProduct()">
+                  +
+                </ion-button>
 
+                <ng-template #editingProductButton>
                   <ion-button 
-                    *ngIf="editingProductIndex == null; else editingProductButton"
-                    [disabled]="current.chosenProduct == null || current.weight < 1"
-                    (click)="addProduct()">
-                    +
+                  [disabled]="current.chosenProduct == null || current.weight < 1"
+                  (click)="saveChangesToProduct()">
+                    <ion-icon name="create"></ion-icon>
                   </ion-button>
-
-                  <ng-template #editingProductButton>
-                    <ion-button 
-                    [disabled]="current.chosenProduct == null || current.weight < 1"
-                    (click)="saveChangesToProduct()">
-                      <ion-icon name="create"></ion-icon>
-                    </ion-button>
-                  </ng-template>
-                  
-                </div>
+                </ng-template>
+                
               </div>
+            </div>
 
-              <product
-                *ngFor="let product of addedProducts[macronutrient.Letter]; let i = index"
-                [index]="i"
-                [name]="product.info.Name"
-                [weight]="product.weight"
-                [blocks]="product.blocks"
-                [imageName]="product.info.ImageName"
-                (editProductEmitter)="editProduct(macronutrient.Letter, i)"
-                (deleteProductEmitter)="deleteProduct(macronutrient.Letter, i)">
-              </product>
+            <product
+              *ngFor="let product of addedProducts[macronutrient.Letter]; let i = index"
+              [index]="i"
+              [name]="product.info.Name"
+              [weight]="product.weight"
+              [blocks]="product.blocks"
+              [imageName]="product.info.ImageName"
+              (editProductEmitter)="editProduct(macronutrient.Letter, i)"
+              (deleteProductEmitter)="deleteProduct(macronutrient.Letter, i)">
+            </product>
 
-            </ion-card-content>
+          </ion-card-content>
 
-          </ion-card>
-        </ion-col>
+        </ion-card>
+      </ion-col>
 
     </ion-row>
 

@@ -1,5 +1,27 @@
 <ion-app>
-    <ion-menu contentId="main-content" type="overlay">
+
+    <div id="menu" [style.width.px]="menuWidth">
+      <ion-button fill="clear" color="dark" (click)="toggleMenu()">
+        <ion-icon slot="start" name="menu"></ion-icon>
+        <ion-label>
+          {{lang.menu}}
+        </ion-label>
+      </ion-button>
+      <ion-button
+        *ngFor="let p of appPages" 
+        fill="clear" 
+        [color]="p.color"
+        (click)="closeMenu()"
+        [routerDirection]="'root'" [routerLink]="[p.url]">
+        <ion-icon slot="start" [name]="p.icon"></ion-icon>
+        <ion-label>
+          {{p.title}}
+        </ion-label>
+      </ion-button
+      >
+    </div>
+
+    <!-- <ion-menu contentId="main-content" type="overlay">
       <ion-header>
         <ion-toolbar>
           <ion-title>Menu</ion-title>
@@ -17,6 +39,12 @@
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
+    </ion-menu> -->
+
+    <ion-router-outlet id="main-content"
+      [style.width]="sanitizer.bypassSecurityTrustStyle('calc(100% - menuWidth px)')" 
+      [style.margin-left.px]="50">
+
+    </ion-router-outlet>
+
 </ion-app>

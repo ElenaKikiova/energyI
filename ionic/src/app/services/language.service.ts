@@ -64,7 +64,8 @@ export class LanguageService {
     "product": "Продукт",
     "type": "Тип",
     "value": "Стойност за 100г.",
-    "search": "Търсене"    
+    "search": "Търсене",
+    "menu": "Меню"
   }
 
   constructor() { 

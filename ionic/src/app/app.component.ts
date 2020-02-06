@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Sanitizer } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -15,26 +15,37 @@ export class AppComponent {
 
   public lang = this.languageService.current;
 
+  public menuWidths = {
+    "collapsed": 50,
+    "expanded": 200
+  }
+
+  public menuWidth = this.menuWidths.collapsed;
+
   public appPages = [
     {
       title: 'Начало',
       url: '/home',
-      icon: 'home'
+      icon: 'home',
+      color: 'quaternary'
     },
     {
       title: this.lang.balancePage,
       url: '/balance',
-      icon: 'restaurant'
+      icon: 'restaurant',
+      color: 'secondary'
     },
     {
       title: this.lang.diaryPage,
       url: '/diary',
-      icon: 'book'
+      icon: 'book',
+      color: 'tertiary'
     },
     {
       title: this.lang.productsPage,
       url: '/products',
-      icon: 'nutrition'
+      icon: 'nutrition',
+      color: 'primary'
     }
   ];
 
@@ -42,7 +53,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private sanitizer: Sanitizer
   ) {
     this.initializeApp();
   }
@@ -52,5 +64,14 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  toggleMenu(){
+    if(this.menuWidth == this.menuWidths.collapsed) this.menuWidth = this.menuWidths.expanded;
+    else this.menuWidth = this.menuWidths.collapsed;
+  }
+
+  closeMenu(){
+    this.menuWidth = this.menuWidths.collapsed;
   }
 }
